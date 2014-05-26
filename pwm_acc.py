@@ -18,7 +18,10 @@ acc.write8(0x2e,0x80)
 motor1.start(motor_1_port_string,50,pwm_freq,motor_1_invert)
 motor2.start(motor_2_port_string,50,pwm_freq,motor_2_invert)
 motor3.start(motor_3_port_string,50,pwm_freq,motor_3_invert)
+
 motor1.set_duty_cycle(motor_1_port_string,10.0)
+motor2.set_duty_cycle(motor_2_port_string,10.0)
+motor3.set_duty_cycle(motor_3_port_string,10.0)
 i=0
 avgArray = []
 avgArrayy = []
