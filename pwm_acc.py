@@ -1,14 +1,24 @@
 from Adafruit_I2C import Adafruit_I2C as I2C
-import Adafruit_BBIO.PWM as PWM
-import Adafruit_BBIO.PWM as PWM2
+import Adafruit_BBIO.PWM as motor1
+import Adafruit_BBIO.PWM as motor2
+motor_1_port_string = "P9_22"
+motor_2_port_string = "P9_14"
+motor_3_port_string = "foo"
+
+motor_1_invert = 0
+motor_2_invert = 0
+motor_3_invert = 0
+
+pwm_freq = 20000
 temp = I2C(0x48)
 acc = I2C(0x53)
 acc.write8(0x31,0xB)
 acc.write8(0x2d,0x8)
 acc.write8(0x2e,0x80)
-PWM.start("P9_22",50,20000,0)
-PWM2.start("P9_14",50,20000,0)
-PWM.set_duty_cycle("P9_22",10.0)
+motor1.start(motor_1_port_string,50,pwm_freq,motor_1_invert)
+motor2.start(motor_2_port_string,50,pwm_freq,motor_2_invert)
+motor3.start(motor_3_port_string,50,pwm_freq,motor_3_invert)
+motor1.set_duty_cycle(motor_1_port_string,10.0)
 i=0
 avgArray = []
 avgArrayy = []
@@ -37,7 +47,7 @@ while 1:
 	avgVal = sum(avgArray)/len(avgArray)
 	avgValy = sum(avgArrayy)/len(avgArrayy)
 	print "val %f, val1: %i, val2: %i\n" % (avgVal , value1, value2)
-	PWM.set_duty_cycle("P9_22",avgVal)
-	PWM2.set_duty_cycle("P9_14",avgValy)
+	motor1.set_duty_cycle("P9_22",avgVal)
+	motor2.set_duty_cycle("P9_14",avgValy)
 	#print avgArray
 	#print i
