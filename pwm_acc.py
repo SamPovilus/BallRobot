@@ -1,9 +1,13 @@
 from Adafruit_I2C import Adafruit_I2C as I2C
 import Adafruit_BBIO.PWM as motor1
 import Adafruit_BBIO.PWM as motor2
-motor_1_port_string = "P9_22"
-motor_2_port_string = "P9_14"
-motor_3_port_string = "foo"
+motor_1_port_string = "P9_14"
+motor_2_port_string = "P9_22"
+motor_3_port_string = "P8_13"
+
+motor_1_dir_string="P9_12"
+motor_2_dir_string="P9_18"
+motor_3_dir_string="P9_11"
 
 motor_1_invert = 0
 motor_2_invert = 0
