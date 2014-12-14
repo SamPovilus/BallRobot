@@ -14,6 +14,4 @@ while 1:
     myMotor0.set_speed(int(speedList[0]))
     myMotor1.set_speed(int(speedList[1]))
     myMotor2.set_speed(int(speedList[2]))
-    i = i + 1
-    sleep(1.9)
-    
+    i = i + 1    

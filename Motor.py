@@ -12,7 +12,7 @@ class Motor(threading.Thread):
     myInvertPort = None
     myPWMPort = None
     def __init__(self, pwmPort, invertPortNumber, inverted,motorNumber,freq,filterDepth = 10):
-        print "Motor thread started" + str(type(invertPortNumber))
+        print "Motor thread started"
         self.myInvertPort = InvertPort.InvertPort(str(invertPortNumber))
         self.pastSpeeds =  collections.deque(maxlen=filterDepth)
         self.myPWMPort = pwmPort
@@ -31,7 +31,6 @@ class Motor(threading.Thread):
             if(abs(currentSpeed)>100.0):
               print "ERROR current speed out of range" + str(currentSpeed)
               currentSpeed=0
-            print currentSpeed
             PWMoutput.set_duty_cycle(self.myPWMPort,abs(currentSpeed))
             if(currentSpeed < 0.0):
                 self.myInvertPort.invert()
