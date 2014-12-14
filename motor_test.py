@@ -10,5 +10,5 @@ while 1:
     print "Motor_test i:" + str(i)
     myMotor.set_speed(i)
     i = i + 1
-    sleep(1.4)
+    sleep(1.9)
     

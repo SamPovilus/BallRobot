@@ -15,10 +15,11 @@ class Motor(threading.Thread):
         self.mySpeedsQueue.put(speed)
 
     def run(self):
-        if not self.mySpeedsQueue.empty():
-            print "Speed set to: " + self.mySpeedsQueue.get()
-            self.mySpeedsQueue.task_done()
+        while 1:
+            if not self.mySpeedsQueue.empty():
+                print "Speed set to: " + str(self.mySpeedsQueue.get())
+                self.mySpeedsQueue.task_done()
             
-        else:
-            print "Speed not changed"
-        sleep(0.5)
+            else:
+                print "Speed not changed"
+            sleep(0.5)
