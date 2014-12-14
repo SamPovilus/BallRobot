@@ -1,7 +1,7 @@
 import Motor
 from time import sleep
 
-myMotor = Motor.Motor(1,2,3,4,5,100)
+myMotor = Motor.Motor("P9_14","P9_12",False,0,5000,100)
 
 myMotor.start()
 
