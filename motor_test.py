@@ -1,15 +1,19 @@
 import Motor
 from time import sleep
 
-myMotor = Motor.Motor("P9_14","P9_12",False,0,5000,100)
+myMotor0 = Motor.Motor("P9_14","P9_12",False,0,5000,20)
+myMotor1 = Motor.Motor("P9_22","P9_18",False,1,5000,20)
+myMotor2 = Motor.Motor("P8_13","P8_11",False,2,5000,20)
 
-myMotor.start()
+myMotor0.start()
 
 i = 0 
 while 1:
     speed = input('Enter motor speeds seperated by commas: ')
     speedList = str(speed).split(",")
-    myMotor.set_speed(int(speedList[0]))
+    myMotor0.set_speed(int(speedList[0]))
+    myMotor1.set_speed(int(speedList[1]))
+    myMotor2.set_speed(int(speedList[2]))
     i = i + 1
     sleep(1.9)
     
