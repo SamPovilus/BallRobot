@@ -32,7 +32,7 @@ class Motor(threading.Thread):
               print "ERROR current speed out of range" + str(currentSpeed)
               currentSpeed=0
             print currentSpeed
-            PWMoutput.set_duty_cycle(self.myPWMPort,abs(currentSpeed))
+            #PWMoutput.set_duty_cycle(self.myPWMPort,abs(currentSpeed))
             if(currentSpeed < 0.0):
                 self.myInvertPort.invert()
             else:
