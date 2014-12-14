@@ -28,11 +28,11 @@ class Motor(threading.Thread):
             #TODO: better filter design
             self.pastSpeeds.append(self.myDesiredSpeed)
             currentSpeed = numpy.mean(self.pastSpeeds)
-            if(abs(currentSpeed)):
+            if(abs(currentSpeed)>100.0):
               print "ERROR current speed out of range" + str(currentSpeed)
               currentSpeed=0
             print currentSpeed
-            #PWMoutput.set_duty_cycle(self.myPWMPort,abs(currentSpeed))
+            PWMoutput.set_duty_cycle(self.myPWMPort,abs(currentSpeed))
             if(currentSpeed < 0.0):
                 self.myInvertPort.invert()
             else:
