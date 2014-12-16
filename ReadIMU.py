@@ -1,4 +1,6 @@
-import Adafruit_I2C as I2C
+from Adafruit_I2C import Adafruit_I2C as I2C
+import threading
+from time import sleep
 
 class ReadIMU(threading.Thread):
     myACC = None
@@ -12,10 +14,13 @@ class ReadIMU(threading.Thread):
         self.myACC.write8(0x2d,0x8)
         self.myACC.write8(0x2e,0x80)
         self.myPeriod=period
+	super(ReadIMU, self).__init__()
+        self.daemon = True
 
     def run(self):
-        lowerACCBits = self.myACC.readU8(0x32)
-        upperACCBits = self.myACC.readU8(0x33)
-        accVal = (upperACCBits << 8) + lowerACCBits
-        print(accVal)
-        sleep(self.myPeriod)
+	while 1:
+            lowerACCBits = self.myACC.readU8(0x32)
+            upperACCBits = self.myACC.readU8(0x33)
+            accVal = (upperACCBits << 8) + lowerACCBits
+            print(accVal)
+            sleep(self.myPeriod)
