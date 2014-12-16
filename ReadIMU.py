@@ -19,8 +19,14 @@ class ReadIMU(threading.Thread):
 
     def run(self):
 	while 1:
-            lowerACCBits = self.myACC.readU8(0x32)
-            upperACCBits = self.myACC.readU8(0x33)
-            accVal = (upperACCBits << 8) + lowerACCBits
-            print(accVal)
+            lowerACCBitsX = self.myACC.readU8(0x32)
+            upperACCBitsX = self.myACC.readU8(0x33)
+            accValX = (upperACCBitsX << 8) + lowerACCBitsX
+            lowerACCBitsY = self.myACC.readU8(0x34)
+            upperACCBitsY = self.myACC.readU8(0x35)
+            accValY = (upperACCBitsY << 8) + lowerACCBitsY
+            lowerACCBitsZ = self.myACC.readU8(0x34)
+            upperACCBitsZ = self.myACC.readU8(0x35)
+            accValZ= (upperACCBitsZ << 8) + lowerACCBitsZ
+            print "X: " + str(accValX) + " Y: " + str(accValY) + " Z: " + str(accValZ)
             sleep(self.myPeriod)
