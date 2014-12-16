@@ -1,10 +1,10 @@
 import Motor
 from time import sleep
 
-myMotor0 = Motor.Motor("P9_14","P9_12",True,0,5000,20)
-myMotor1 = Motor.Motor("P9_22","P9_18",True,1,5000,20)
-myMotor2 = Motor.Motor("P8_13","P8_11",True,2,5000,20)
-
+myMotor0 = Motor.Motor("P9_14","P9_12",True,0,5000,period = 0.02,filterDepth = 20)
+myMotor1 = Motor.Motor("P9_22","P9_18",True,1,5000,period = 0.02,filterDepth = 20)
+myMotor2 = Motor.Motor("P8_13","P8_11",True,2,5000,period = 0.02,filterDepth = 20)
+myIMU = ReadIMU.ReadIMU(0x53,period=0.02)
 myMotor0.start()
 myMotor1.start()
 myMotor2.start()
