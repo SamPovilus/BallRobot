@@ -27,21 +27,22 @@ class Motor(threading.Thread):
         self.myDebug = debug
 
     def set_speed(self,speed):
-        self.myDesiredSpeed = (speed*(1-self.myMotorDeadband))+self.myMotorDeadband
+        self.myDesiredSpeed = (speed*(100.0-self.myMotorDeadband))
 
     def run(self):
         while 1:
             #TODO: better filter design
             self.pastSpeeds.append(self.myDesiredSpeed)
-            currentSpeed = numpy.mean(self.pastSpeeds)
+#            currentSpeed = numpy.mean(self.pastSpeeds)
+            currentSpeed = self.myDesiredSpeed
             if(abs(currentSpeed)>100.0):
               print "ERROR current speed out of range" + str(currentSpeed)
               currentSpeed=0
-            PWMoutput.set_duty_cycle(self.myPWMPort,abs(currentSpeed))
+            PWMoutput.set_duty_cycle(self.myPWMPort,abs(currentSpeed)+self.myMotorDeadband)
             if(currentSpeed < 0.0):
                 self.myInvertPort.invert()
             else:
                 self.myInvertPort.not_invert()
             if(self.myDebug):
-                print "Motor: " + self.myMotorNumber + " current speed: " + currentSpeed
+                print "Motor: " + str(self.myMotorNumber) + " current speed: " + '%10f' % currentSpeed
             sleep(self.myPeriod)
