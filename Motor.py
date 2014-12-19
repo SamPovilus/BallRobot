@@ -7,12 +7,16 @@ import InvertPort
 
 class Motor(threading.Thread):
     pastSpeeds = None
+    myMotorNumber = None
     myDesiredSpeed = 0
     myInvertPort = None
     myPWMPort = None
     myPeriod = None
-    def __init__(self, pwmPort, invertPortNumber, inverted,motorNumber,freq,period=0.02,filterDepth = 10):
-        print "Motor thread started"
+    myMotorDeadband = 80.0
+    myDebug = None
+    def __init__(self, pwmPort, invertPortNumber, inverted,motorNumber,freq,period=0.02,filterDepth = 10, debug=False):
+        self.myMotorNumber = motorNumber
+	print "Motor " + str(self.myMotorNumber) + " thread started"
         self.myInvertPort = InvertPort.InvertPort(str(invertPortNumber))
         self.pastSpeeds =  collections.deque(maxlen=filterDepth)
         self.myPWMPort = pwmPort
@@ -20,9 +24,10 @@ class Motor(threading.Thread):
         super(Motor, self).__init__()
         self.daemon = True
         self.myPeriod=period
+        self.myDebug = debug
 
     def set_speed(self,speed):
-        self.myDesiredSpeed = speed
+        self.myDesiredSpeed = (speed*(1-self.myMotorDeadband))+self.myMotorDeadband
 
     def run(self):
         while 1:
@@ -37,4 +42,6 @@ class Motor(threading.Thread):
                 self.myInvertPort.invert()
             else:
                 self.myInvertPort.not_invert()
+            if(self.myDebug):
+                print "Motor: " + self.myMotorNumber + " current speed: " + currentSpeed
             sleep(self.myPeriod)

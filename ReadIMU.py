@@ -10,7 +10,9 @@ class ReadIMU(threading.Thread):
     myPeriod = None
     myXQueue = None
     myYQueue = None
-    def __init__(self,ACCAddress,GyroAddress,XQueue,YQueue,period=0.02):
+    myMaxIMUVal = None
+    myDebug = None
+    def __init__(self,ACCAddress,GyroAddress,XQueue,YQueue,period=0.02,maxIMUVal=512.0,debug=False):
         print "IMU thread started"
         self.myACC = I2C(ACCAddress)
         #initalize acceleromoeter
@@ -22,19 +24,30 @@ class ReadIMU(threading.Thread):
         self.daemon = True
         self.myXQueue = XQueue
         self.myYQueue = YQueue
-
+	self.myMaxIMUVal = maxIMUVal
+        self.myDebug = debug
     def run(self):
 	while 1:
             lowerACCBitsX = self.myACC.readU8(0x32)
             upperACCBitsX = self.myACC.readU8(0x33)
             accValX = (upperACCBitsX << 8) + lowerACCBitsX
+            accValX = self.twos_comp(accValX,16)
             lowerACCBitsY = self.myACC.readU8(0x34)
             upperACCBitsY = self.myACC.readU8(0x35)
             accValY = (upperACCBitsY << 8) + lowerACCBitsY
+            accValY = self.twos_comp(accValY,16)
             lowerACCBitsZ = self.myACC.readU8(0x34)
             upperACCBitsZ = self.myACC.readU8(0x35)
             accValZ= (upperACCBitsZ << 8) + lowerACCBitsZ
-            self.myXQueue.put(accValX/512)
-            self.myXQueue.put(accValY/512)
-            print "X: " + str(accValX) + " Y: " + str(accValY) + " Z: " + str(accValZ)
+            accValZ = self.twos_comp(accValZ,16)
+            self.myXQueue.put(accValX/self.myMaxIMUVal)
+            self.myXQueue.put(accValY/self.myMaxIMUVal)
+            if(self.myDebug):
+                print "ReadIMU X: " + '%10f' % (accValX/self.myMaxIMUVal) + " Y: " + '%10f' % (accValY/self.myMaxIMUVal) + " Z: " +  '%10f' % (accValZ/self.myMaxIMUVal)
             sleep(self.myPeriod)
+
+    def twos_comp(self,val, bits):
+        """compute the 2's compliment of int value val"""
+        if( (val&(1<<(bits-1))) != 0 ):
+            val = val - (1<<bits)
+        return val
