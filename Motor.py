@@ -1,5 +1,4 @@
 import Adafruit_BBIO.PWM as PWMoutput
-import Queue
 from time import sleep
 import threading
 import collections

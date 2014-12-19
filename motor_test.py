@@ -1,11 +1,16 @@
 import Motor
 import ReadIMU
+import TransformXYRotZToMotor
 from time import sleep
+
+XQueue = Queue.Queue(maxsize=2)
+YQueue = Queue.Queue(maxsize=2)
 
 myMotor0 = Motor.Motor("P9_14","P9_12",True,0,5000,period = 0.02,filterDepth = 20)
 myMotor1 = Motor.Motor("P9_22","P9_18",True,1,5000,period = 0.02,filterDepth = 20)
 myMotor2 = Motor.Motor("P8_13","P8_11",True,2,5000,period = 0.02,filterDepth = 20)
-myIMU = ReadIMU.ReadIMU(0x53,"FAKE",period=0.02)
+
+myIMU = ReadIMU.ReadIMU(0x53,"FAKE",XQueue,YQueue,period=0.02)
 
 myMotor0.start()
 myMotor1.start()
@@ -14,8 +19,9 @@ myIMU.start()
 
 i = 0 
 while 1:
-    speed = input('Enter motor speeds seperated by commas: ')
-    speedList = str(speed).split(",")
+#    speed = input('Enter motor speeds seperated by commas: ')
+#    speedList = str(speed).split(",")
+    speedList = TransformXYRotZToMotor.TransformXYRotZToMotor(XQueue.pop(),XQueue.pop(),0)
     myMotor0.set_speed(int(speedList[0]))
     myMotor1.set_speed(int(speedList[1]))
     myMotor2.set_speed(int(speedList[2]))
