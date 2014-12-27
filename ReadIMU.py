@@ -40,30 +40,21 @@ class ReadIMU(threading.Thread):
         
     def run(self):
 	while 1:
-            print "Read IMU 0"
             lowerACCBitsX = self.myACC.readU8(0x32)
             upperACCBitsX = self.myACC.readU8(0x33)
-            print "Read IMU 1"
             accValX = (upperACCBitsX << 8) + lowerACCBitsX
             accValX = self.twos_comp(accValX,16)
-            print "Read IMU 2"
             lowerACCBitsY = self.myACC.readU8(0x34)
             upperACCBitsY = self.myACC.readU8(0x35)
-            print "Read IMU 3"
             accValY = (upperACCBitsY << 8) + lowerACCBitsY
             accValY = self.twos_comp(accValY,16)
-            print "Read IMU 4"
             lowerACCBitsZ = self.myACC.readU8(0x34)
             upperACCBitsZ = self.myACC.readU8(0x35)
-            print "Read IMU 5"
             accValZ= (upperACCBitsZ << 8) + lowerACCBitsZ
             accValZ = self.twos_comp(accValZ,16)
-            print "Read IMU 6"
             self.myXQueue.put(accValX/self.myMaxIMUVal)
             self.myYQueue.put(accValY/self.myMaxIMUVal)
-            print "Read IMU 7"
             self.myTelemQueue.put(struct.pack('fffl',(accValX/self.myMaxIMUVal),(accValY/self.myMaxIMUVal),(accValZ/self.myMaxIMUVal),self.myMaxIMUVal))
-            print "Read IMU 8"
             self.myNotificationQueue.put(Globals.IMU_ID_ACC+Globals.IMU_NOTIFICATION_OFFSET)
             if(self.myDebug):
                 print " ReadIMU X: " + '%10f' % (accValX/self.myMaxIMUVal) + " Y: " + '%10f' % (accValY/self.myMaxIMUVal) + " Z: " +  '%10f' % (accValZ/self.myMaxIMUVal)
