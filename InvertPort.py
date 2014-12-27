@@ -7,8 +7,10 @@ class InvertPort():
     valueFile = None
     invertedString = "1"
     notInvertedString = "0"
-    def __init__(self,invertPortNumber):
+    myDebug = None
+    def __init__(self,invertPortNumber,debug=False):
         self.myPortNumber = invertPortNumber
+	self.myDebug = debug
         GPIO.setup(self.myPortNumber,GPIO.OUT)
 #        exportFile = open('/sys/class/gpio/export','wa')
 #        exportFile = open('./export','a')
@@ -29,7 +31,8 @@ class InvertPort():
         if self.inverted:
             return
         else:
-            print "inverting port " + str(self.myPortNumber)
+            if(self.myDebug):
+                print "inverting port " + str(self.myPortNumber)
             GPIO.output(self.myPortNumber,GPIO.HIGH)
             self.inverted = True
 #            self.valueFile.write(self.invertedString)
@@ -38,7 +41,8 @@ class InvertPort():
         if not self.inverted:
             return
         else:
-            print "uninverting port :" + str(self.myPortNumber)
+            if(self.myDebug):
+                print "uninverting port :" + str(self.myPortNumber)
             GPIO.output(self.myPortNumber,GPIO.LOW)
             self.inverted = False
  #           self.valueFile.write(self.notInvertedString)

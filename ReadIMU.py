@@ -41,7 +41,7 @@ class ReadIMU(threading.Thread):
             accValZ= (upperACCBitsZ << 8) + lowerACCBitsZ
             accValZ = self.twos_comp(accValZ,16)
             self.myXQueue.put(accValX/self.myMaxIMUVal)
-            self.myXQueue.put(accValY/self.myMaxIMUVal)
+            self.myYQueue.put(accValY/self.myMaxIMUVal)
             if(self.myDebug):
                 print "ReadIMU X: " + '%10f' % (accValX/self.myMaxIMUVal) + " Y: " + '%10f' % (accValY/self.myMaxIMUVal) + " Z: " +  '%10f' % (accValZ/self.myMaxIMUVal)
             sleep(self.myPeriod)

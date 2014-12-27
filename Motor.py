@@ -12,12 +12,14 @@ class Motor(threading.Thread):
     myInvertPort = None
     myPWMPort = None
     myPeriod = None
-    myMotorDeadband = 80.0
+    myMotorDeadband = 60.0
     myDebug = None
-    def __init__(self, pwmPort, invertPortNumber, inverted,motorNumber,freq,period=0.02,filterDepth = 10, debug=False):
+    myDirInverted = None
+
+    def __init__(self, pwmPort, invertPortNumber, dirInverted,motorNumber,freq,period=0.02,filterDepth = 10, debug=False,inverted = True):
         self.myMotorNumber = motorNumber
 	print "Motor " + str(self.myMotorNumber) + " thread started"
-        self.myInvertPort = InvertPort.InvertPort(str(invertPortNumber))
+        self.myInvertPort = InvertPort.InvertPort(str(invertPortNumber),debug)
         self.pastSpeeds =  collections.deque(maxlen=filterDepth)
         self.myPWMPort = pwmPort
         PWMoutput.start(self.myPWMPort,50,freq,inverted)
@@ -25,10 +27,12 @@ class Motor(threading.Thread):
         self.daemon = True
         self.myPeriod=period
         self.myDebug = debug
-
+	if dirInverted:
+	    self.myDirInverted = -1
+	else:
+            self.myDirInverted = 1
     def set_speed(self,speed):
-        self.myDesiredSpeed = (speed*(100.0-self.myMotorDeadband))
-
+        self.myDesiredSpeed = (speed*(100.0-self.myMotorDeadband))*self.myDirInverted
     def run(self):
         while 1:
             #TODO: better filter design
@@ -38,11 +42,12 @@ class Motor(threading.Thread):
             if(abs(currentSpeed)>100.0):
               print "ERROR current speed out of range" + str(currentSpeed)
               currentSpeed=0
-            PWMoutput.set_duty_cycle(self.myPWMPort,abs(currentSpeed)+self.myMotorDeadband)
+            if(abs(currentSpeed)>5.0):
+                PWMoutput.set_duty_cycle(self.myPWMPort,abs(currentSpeed)+self.myMotorDeadband)
             if(currentSpeed < 0.0):
                 self.myInvertPort.invert()
             else:
                 self.myInvertPort.not_invert()
             if(self.myDebug):
-                print "Motor: " + str(self.myMotorNumber) + " current speed: " + '%10f' % currentSpeed
+                print "Motor: " + str(self.myMotorNumber) + " current speed: " + '%+10f' % currentSpeed
             sleep(self.myPeriod)
