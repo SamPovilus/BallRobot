@@ -12,7 +12,10 @@ class ReadIMU(threading.Thread):
     myYQueue = None
     myMaxIMUVal = None
     myDebug = None
-    def __init__(self,ACCAddress,GyroAddress,XQueue,YQueue,period=0.02,maxIMUVal=512.0,debug=False):
+    myTelemQueue = None
+    myNotificationQueue = None
+
+    def __init__(self,ACCAddress,GyroAddress,XQueue,YQueue,TlmQueue,NotificationQueue,period=0.02,maxIMUVal=512.0,debug=False):
         print "IMU thread started"
         self.myACC = I2C(ACCAddress)
         #initalize acceleromoeter
@@ -26,6 +29,9 @@ class ReadIMU(threading.Thread):
         self.myYQueue = YQueue
 	self.myMaxIMUVal = maxIMUVal
         self.myDebug = debug
+        self.myTelemQueue = TlmQueue
+        self.myNotificationQueue = NotificationQueue
+        
     def run(self):
 	while 1:
             lowerACCBitsX = self.myACC.readU8(0x32)
@@ -42,6 +48,8 @@ class ReadIMU(threading.Thread):
             accValZ = self.twos_comp(accValZ,16)
             self.myXQueue.put(accValX/self.myMaxIMUVal)
             self.myYQueue.put(accValY/self.myMaxIMUVal)
+            self.myTelemQueue.put(Struct.pack('\f\f\f\l\f',(accValX/self.myMaxIMUVal),(accValY/self.myMaxIMUVal),(accValZ/self.myMaxIMUVal),self.myMaxIMUVal))
+            self.myNotificationQueue.put(IMU_ID_ACC+IMU_NOTIFICATION_OFFSET)
             if(self.myDebug):
                 print "ReadIMU X: " + '%10f' % (accValX/self.myMaxIMUVal) + " Y: " + '%10f' % (accValY/self.myMaxIMUVal) + " Z: " +  '%10f' % (accValZ/self.myMaxIMUVal)
             sleep(self.myPeriod)
