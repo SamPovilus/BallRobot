@@ -1,12 +1,17 @@
-import Adafruit_BBIO.PWM as PWMoutput
+try:
+    import Adafruit_BBIO.PWM as PWMoutput
+except ImportError:
+    print "*********** Using stubbed PWM module ************"
+    import PWMStubs as PWMoutput
+    
 from time import sleep
 import threading
 import collections
 import numpy
 import InvertPort
 import Queue
-import Struct
-
+import struct
+import Globals
 
 class Motor(threading.Thread):
     pastSpeeds = None
@@ -21,7 +26,7 @@ class Motor(threading.Thread):
     myTelemQueue = None
     myNotificationQueue = None
 
-    def __init__(self, pwmPort, invertPortNumber, inverted, motorNumber, PWMFreq, telemQueue, notifcationQueue ,period=0.02,filterDepth = 10, debug=False):
+    def __init__(self, pwmPort, invertPortNumber, inverted, motorNumber, PWMFreq, telemQueue, notificationQueue ,dirInverted = False,period=0.02,filterDepth = 10, debug=False):
         self.myMotorNumber = motorNumber
 	print "Motor " + str(self.myMotorNumber) + " thread started"
         self.myInvertPort = InvertPort.InvertPort(str(invertPortNumber),debug)
@@ -42,8 +47,8 @@ class Motor(threading.Thread):
         #from open office f(x) =  - 58.2750582751x^4 + 221.8337218337x^3 - 321.3286713287x^2 + 258.7140637141x - 0.8391608392
         #self.myDesiredSpeed = (speed*(100.0-self.myMotorDeadband))
         self.myDesiredSpeed = -58.2750582751*(speed**4) + 221.8337218337*(speed**3) - 321.3286713287*(speed**2) + 258.7140637141*speed - 0.8391608392
-        self.myTelemQueue.put(Struct.pack('\f\f\l\l',self.myDesiredSpeed,float(speed),\xdeadbeef,\xdeadbeef))
-        self.myNotificationQueue.put(self.myMotorNumber+MOTOR_NOTIFICATION_OFFSET)
+        self.myTelemQueue.put(struct.pack('ffll',self.myDesiredSpeed,float(speed),0xdeadbeef,0xdeadbeef))
+        self.myNotificationQueue.put(self.myMotorNumber+Globals.MOTOR_NOTIFICATION_OFFSET)
         
     def run(self):
         while 1:

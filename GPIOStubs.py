@@ -6,3 +6,4 @@ def output(portNum,dir):
     print "GPIO output portNum: " + portNum + " dir: " + str(dir)
 
 OUT = 1
+HIGH = 11

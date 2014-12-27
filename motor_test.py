@@ -3,29 +3,31 @@ import ReadIMU
 import TransformXYRotZToMotor
 import Queue
 from time import sleep
-MOTOR_NOTIFICATION_OFFSET = 100
-IMU_NOTIFICATION_OFFSET = 200
-IMU_ID_ACC = 10
-IMU_ID_GYRO = 20
+import Globals
+import TelemetryHandler
 Motor1TlmQueue = Queue.Queue(maxsize=10)
 Motor2TlmQueue = Queue.Queue(maxsize=10)
 Motor3TlmQueue = Queue.Queue(maxsize=10)
 IMUTlmQueue = Queue.Queue(maxsize=10)
 NotificationQueue = Queue.Queue(maxsize=4)
 
-XQueue = Queue.Queue(maxsize=2)
-YQueue = Queue.Queue(maxsize=2)
+XQueue = Queue.Queue(maxsize=4)
+YQueue = Queue.Queue(maxsize=4)
 
-myMotor0 = Motor.Motor("P9_14","P9_12",True,0,5000,Motor1TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= True)
-myMotor1 = Motor.Motor("P9_22","P9_18",True,1,5000,Motor3TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= True)
-myMotor2 = Motor.Motor("P8_13","P8_11",True,2,5000,Motor3TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= True)
+myMotor0 = Motor.Motor("P9_14","P9_12",True,0,5000,Motor1TlmQueue,NotificationQueue,period = 2.02,filterDepth = 2, debug= False)
+myMotor1 = Motor.Motor("P9_22","P9_18",True,1,5000,Motor2TlmQueue,NotificationQueue,period = 2.02,filterDepth = 2, debug= False)
+myMotor2 = Motor.Motor("P8_13","P8_11",True,2,5000,Motor3TlmQueue,NotificationQueue,period = 2.02,filterDepth = 2, debug= False)
 
-myIMU = ReadIMU.ReadIMU(0x53,"FAKE",XQueue,YQueue,IMUTlmQueue,NotificationQueue,period=0.02)
+myIMU = ReadIMU.ReadIMU(0x53,"FAKE",XQueue,YQueue,IMUTlmQueue,NotificationQueue,period=10.02,debug = True)
+
+myTelemetryHandler = TelemetryHandler.TelemetryHandler(Motor1TlmQueue, Motor2TlmQueue, Motor3TlmQueue, IMUTlmQueue , NotificationQueue)
+
 
 myMotor0.start()
 myMotor1.start()
 myMotor2.start()
 myIMU.start()
+myTelemetryHandler.start()
 
 i = 0 
 while 1:

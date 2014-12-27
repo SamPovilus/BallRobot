@@ -1,8 +1,8 @@
 import threading
 import Queue
+import Globals
 
-
-class TelemtryHandler(threading.Thread):
+class TelemetryHandler(threading.Thread):
     myMotor1Q = None
     myMotor2Q = None
     myMotor3Q = None
@@ -16,29 +16,30 @@ class TelemtryHandler(threading.Thread):
         self.myMotor3Q = motor3q
         self.myIMUQ = imuq
         self.myNotificationQ = notificationq
-        
+        super(TelemetryHandler, self).__init__()
 
     def run(self):
-        queues = { MOTOR_NOTIFICATION_OFFSET + 0:Motor1Queue,
-                   MOTOR_NOTIFICATION_OFFSET + 1:Motor2Queue,
-                   MOTOR_NOTIFICATION_OFFSET + 2:Motor3Queue,
-                   IMU_NOTIFICATION_OFFSET + IMU_ID_ACC:AccQueue
+        queues = { Globals.MOTOR_NOTIFICATION_OFFSET + 0:self.Motor1Queue,
+                   Globals.MOTOR_NOTIFICATION_OFFSET + 1:self.Motor2Queue,
+                   Globals.MOTOR_NOTIFICATION_OFFSET + 2:self.Motor3Queue,
+                   Globals.IMU_NOTIFICATION_OFFSET + Globals.IMU_ID_ACC:self.AccQueue}
         while 1:
             queueNum = self.myNotificationQ.get()
-            queues.setdefault(queueNum,DefaultMsg)
+            print "Got message from notification queue: " + str(queueNum)
+            queues.setdefault(queueNum,self.DefaultMsg)
 
-    def Motor1Queue():
-        puts "got message from motor 1" + str(self.myMotor1Q.get())
+    def Motor1Queue(self):
+        print "$$$got message from motor 1" + str(self.myMotor1Q.get())
                    
-    def Motor2Queue():
-        puts "got message from motor 2" + str(self.myMotor2Q.get())
+    def Motor2Queue(self):
+        print "$$$got message from motor 2" + str(self.myMotor2Q.get())
                    
-    def Motor3Queue():
-        puts "got message from motor 3" + str(self.myMotor3Q.get())
+    def Motor3Queue(self):
+        print "$$$got message from motor 3" + str(self.myMotor3Q.get())
                    
-    def AccQueue():
-        puts "got message from acc" + str(self.myIMUQ.get())
+    def AccQueue(self):
+        print "$$$got message from acc" + str(self.myIMUQ.get())
                    
-    def DefaultMsg():
-        puts "unrecognised queue"
+    def DefaultMsg(self):
+        print "$$$unrecognised queue"
         

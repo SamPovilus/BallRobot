@@ -1,4 +1,8 @@
-import Adafruit_BBIO.GPIO as GPIO
+try:
+    import Adafruit_BBIO.GPIO as GPIO
+except ImportError:
+    print "*********** Using stubbed GPIO module ************"
+    import GPIOStubs as GPIO
 from time import sleep
 
 class InvertPort():
