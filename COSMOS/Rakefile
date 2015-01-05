@@ -1,0 +1,68 @@
+# encoding: ascii-8bit
+
+# Ball Aerospace & Technologies Corp. Proprietary Information
+#
+# The information contained herein is the private property of Ball Aerospace &
+# Technologies Corp. that is being made available to the recipient under the
+# terms of a nondisclosure agreement or by other special arrangement.  It may
+# not be used, in whole or in part, except for the limited purpose for which it
+# has been furnished. It may not be distributed or reproduced, except as
+# specifically authorized by Ball Aerospace and with this legend conspicuously
+# attached.  This information is exempt from public disclosure under 5 U.S.C.
+# 552(b)(4), and its use by Government personnel is subject to the restrictions
+# imposed by 18 U.S.C. 1905.
+#
+# This source code module was developed with funds provided by a DOD program
+# and Capital funding under charge number 11418.13.001.
+
+require 'cosmos'
+
+def create_crc_file(official)
+  count = 0
+  ignore = [
+    # Add filenames here if you don't want them to be CRCed
+  ]
+  # Create the crc.txt file
+  crc = Cosmos::Crc32.new(Cosmos::Crc32::DEFAULT_POLY, Cosmos::Crc32::DEFAULT_SEED, true, false)
+  File.open("config/data/crc.txt",'w') do |file|
+    file.puts "USER_MODIFIED" unless official
+    Dir[File.join('lib','**','*')].each do |filename|
+      next if File.directory?(filename)
+      next if ignore.include?(filename)
+      file_data = File.open(filename, 'rb').read.gsub("\x0D\x0A", "\x0A")
+      file.puts "\"#{filename}\" #{sprintf("0x%08X", crc.calc(file_data))}"
+      count += 1
+    end
+    Dir[File.join('config','**','*')].each do |filename|
+      next if File.directory?(filename)
+      next if ignore.include?(filename)
+      next if File.basename(filename) == 'crc.txt'
+      file_data = File.open(filename, 'rb').read.gsub("\x0D\x0A", "\x0A")
+      file.puts "\"#{filename}\" #{sprintf("0x%08X", crc.calc(file_data))}"
+      count += 1
+    end
+    Dir[File.join('tools','**','*')].each do |filename|
+      next if File.directory?(filename)
+      next if ignore.include?(filename)
+      file_data = File.open(filename, 'rb').read.gsub("\x0D\x0A", "\x0A")
+      file.puts "\"#{filename}\" #{sprintf("0x%08X", crc.calc(file_data))}"
+      count += 1
+    end
+    Dir[File.join('procedures','**','*')].each do |filename|
+      next if File.directory?(filename)
+      next if ignore.include?(filename)
+      file_data = File.open(filename, 'rb').read.gsub("\x0D\x0A", "\x0A")
+      file.puts "\"#{filename}\" #{sprintf("0x%08X", crc.calc(file_data))}"
+      count += 1
+    end
+  end
+  puts "Created config/data/crc.txt with #{count} CRCs"
+end
+
+task :crc do
+  create_crc_file(false)
+end
+
+task :crc_official do
+  create_crc_file(true)
+end

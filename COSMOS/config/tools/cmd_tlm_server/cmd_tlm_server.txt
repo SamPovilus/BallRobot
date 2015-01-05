@@ -1,0 +1,7 @@
+TITLE 'Ball robot telem'
+
+PACKET_LOG_WRITER COSMOSLOG packet_log_writer.rb cosmos
+
+# AUTO_INTERFACE_TARGETS # Use cmd_tlm_server.txt from all targets declared in system.txt
+
+INTERFACE BALL_ROBOT tcpip_client_interface.rb 192.168.1.141 5005 5005 10.0 nil BURST 4 0xDEADBEEF
