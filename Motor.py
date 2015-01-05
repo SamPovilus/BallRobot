@@ -47,7 +47,7 @@ class Motor(threading.Thread):
         #from open office f(x) =  - 58.2750582751x^4 + 221.8337218337x^3 - 321.3286713287x^2 + 258.7140637141x - 0.8391608392
         #self.myDesiredSpeed = (speed*(100.0-self.myMotorDeadband))
         self.myDesiredSpeed = -58.2750582751*(speed**4) + 221.8337218337*(speed**3) - 321.3286713287*(speed**2) + 258.7140637141*speed - 0.8391608392
-        self.myTelemQueue.put(struct.pack('ffll',self.myDesiredSpeed,float(speed),0xdeadbeef,0xdeadbeef))
+        self.myTelemQueue.put(struct.pack('>LffL',0xdeadbeef,self.myDesiredSpeed,float(speed),0xdeadbeef))
         self.myNotificationQueue.put(self.myMotorNumber+Globals.MOTOR_NOTIFICATION_OFFSET)
         
     def run(self):

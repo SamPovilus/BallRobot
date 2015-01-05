@@ -3,8 +3,9 @@ class I2CStubs():
         print "addr: " + str(addr)
 
     def write8(self,addr,val):
-        print "write8 addr: " + str(addr) + " val: " + str(val)
-
+        #print "write8 addr: " + str(addr) + " val: " + str(val)
+        pass
+    
     def readU8(self,addr):
-        print "read8 addr: " + str(addr)
+        #print "read8 addr: " + str(addr)
         return 1
