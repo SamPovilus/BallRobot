@@ -43,17 +43,24 @@ class TelemetryHandler(threading.Thread):
             
     def Motor1Queue(self):
         msg = self.myMotor1Q.get()
-        print "got message from motor 1" + str(msg)
+        print "got message from motor 1: " + str(msg)
         self.conn.send(msg)
         
     def Motor2Queue(self):
-        print "got message from motor 2" + str(self.myMotor2Q.get())
-                   
+        msg = self.myMotor2Q.get()
+        print "got message from motor 2: " + str(msg)
+        #self.conn.send(msg)
+
     def Motor3Queue(self):
-        print "got message from motor 3" + str(self.myMotor3Q.get())
-                   
+        msg = self.myMotor3Q.get()
+        print "got message from motor 3: " + str(msg)
+        #self.conn.send(msg)
+
+        
     def AccQueue(self):
-        print "got message from acc" + str(self.myIMUQ.get())
-                   
+        msg = self.myIMUQ.get()
+        print "got message from acc: " + str(msg)
+        #self.conn.send(msg)
+           
     def DefaultMsg(self):
         print "unrecognised queue"

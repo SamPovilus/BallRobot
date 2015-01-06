@@ -54,7 +54,7 @@ class ReadIMU(threading.Thread):
             accValZ = self.twos_comp(accValZ,16)
             self.myXQueue.put(accValX/self.myMaxIMUVal)
             self.myYQueue.put(accValY/self.myMaxIMUVal)
-            self.myTelemQueue.put(struct.pack('fffl',(accValX/self.myMaxIMUVal),(accValY/self.myMaxIMUVal),(accValZ/self.myMaxIMUVal),self.myMaxIMUVal))
+            self.myTelemQueue.put(struct.pack('>LLfff',0xdeadbeef,Globals.IMU_ID_ACC+Globals.IMU_NOTIFICATION_OFFSET,(accValX/self.myMaxIMUVal),(accValY/self.myMaxIMUVal),(accValZ/self.myMaxIMUVal)))
             self.myNotificationQueue.put(Globals.IMU_ID_ACC+Globals.IMU_NOTIFICATION_OFFSET)
             if(self.myDebug):
                 print " ReadIMU X: " + '%10f' % (accValX/self.myMaxIMUVal) + " Y: " + '%10f' % (accValY/self.myMaxIMUVal) + " Z: " +  '%10f' % (accValZ/self.myMaxIMUVal)
