@@ -1,0 +1,18 @@
+Unexpected Output:
+
+2015/01/10 12:37:56.982  FATAL: Fatal Exception! Exiting...
+2015/01/10 12:37:56.982  FATAL: ENOENT : No such file or directory - /home/spovilus/robot/COSMOS/outputs/logs/2015_01_10_11_54_21_server_messages.txt
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/utilities/message_log.rb:63:in `chmod'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/utilities/message_log.rb:63:in `block in stop'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/top_level.rb:597:in `set_working_dir'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/utilities/message_log.rb:62:in `stop'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/tools/cmd_tlm_server/cmd_tlm_server_gui.rb:949:in `closeEvent'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/gui/qt.rb:253:in `method_missing'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/gui/qt.rb:253:in `exec'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/gui/qt_tool.rb:204:in `block in run'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/top_level.rb:597:in `set_working_dir'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/gui/qt_tool.rb:185:in `run'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/tools/cmd_tlm_server/cmd_tlm_server_gui.rb:982:in `block in run'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/top_level.rb:434:in `catch_fatal_exception'
+/home/spovilus/.rvm/gems/ruby-2.0.0-p598/gems/cosmos-2.6.1/lib/cosmos/tools/cmd_tlm_server/cmd_tlm_server_gui.rb:959:in `run'
+tools/CmdTlmServer:21:in `<main>'
