@@ -3,6 +3,7 @@ import Queue
 import Globals
 import socket
 import errno
+import binascii
 
 TCP_IP = '192.168.1.141'
 TCP_PORT = 5005
@@ -37,58 +38,43 @@ class TelemetryHandler(threading.Thread):
             #self.conn.close()
         
     def Connection(self):
-        queues = { Globals.MOTOR_NOTIFICATION_OFFSET + 0:self.Motor1Queue,
-                   Globals.MOTOR_NOTIFICATION_OFFSET + 1:self.Motor2Queue,
-                   Globals.MOTOR_NOTIFICATION_OFFSET + 2:self.Motor3Queue,
-                   Globals.IMU_NOTIFICATION_OFFSET + Globals.IMU_ID_ACC:self.AccQueue}
         while 1:
             queueNum = self.myNotificationQ.get()
             print "Got message from notification queue: " + str(queueNum)
-            queues.setdefault(queueNum,self.DefaultMsg)
-            connClosed = queues[queueNum]()
-            if(connClosed):
-                break
-
-            
-    def Motor1Queue(self):
-        msg = self.myMotor1Q.get()
-        print "got message from motor 1: " + str(msg)
-        try:  
-            self.conn.send(msg)
-        except socket.error, e:
-            if isinstance(e.args, tuple):
-                print "errno is %d" % e[0]
-                if e[0] == errno.EPIPE:
+            activeQueue = self.QueueLookup(queueNum)
+            msg = activeQueue.get()
+            if(queueNum > 99 and queueNum < 250):
+                try:
+                    print "msg is: ", binascii.hexlify(msg)
+                    self.conn.send(msg)
+                except socket.error, e:
+                    if isinstance(e.args, tuple):
+                        print "errno is %d" % e[0]
+                        if e[0] == errno.EPIPE:
                     # remote peer disconnected
-                    print "Detected remote disconnect"
-                else:
+                            print "Detected remote disconnect"
+                        else:
                     # determine and handle different error
-                    pass
-            else:
-                print "socket error ", e
-            self.conn.close()
-            return True
-        except IOError, e:
+                            pass
+                    else:
+                        print "socket error ", e
+                        self.conn.close()
+                    break
+                except IOError, e:
             # Hmmm, Can IOError actually be raised by the socket module?
-            print "Got IOError: ", e
-            return True
-        return False
-        
-    def Motor2Queue(self):
-        msg = self.myMotor2Q.get()
-        print "got message from motor 2: " + str(msg)
-        #self.conn.send(msg)
-
-    def Motor3Queue(self):
-        msg = self.myMotor3Q.get()
-        print "got message from motor 3: " + str(msg)
-        #self.conn.send(msg)
-
-        
-    def AccQueue(self):
-        msg = self.myIMUQ.get()
-        print "got message from acc: " + str(msg)
-        #self.conn.send(msg)
-           
-    def DefaultMsg(self):
-        print "unrecognised queue"
+                    print "Got IOError: ", e
+                    break
+            
+    def QueueLookup(self,id):
+        if(id == Globals.MOTOR_NOTIFICATION_OFFSET + 0):
+            print "Motor 1 queue"
+            return self.myMotor1Q
+        if(id == Globals.MOTOR_NOTIFICATION_OFFSET + 1):
+            print "Motor 2 queue"
+            return self.myMotor2Q
+        if(id == Globals.MOTOR_NOTIFICATION_OFFSET + 2):
+            print "Motor 3 queue"
+            return self.myMotor3Q
+        if(id == Globals.IMU_NOTIFICATION_OFFSET + Globals.IMU_ID_ACC):
+            print "IMU ACC QUEUE"
+            return self.myIMUQ
