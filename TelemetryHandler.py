@@ -5,7 +5,7 @@ import socket
 import errno
 import binascii
 
-TCP_IP = '192.168.1.141'
+TCP_IP = '192.168.1.51'
 TCP_PORT = 5005
 BUFFER_SIZE = 50
 
