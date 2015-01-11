@@ -48,8 +48,8 @@ class ReadIMU(threading.Thread):
             upperACCBitsY = self.myACC.readU8(0x35)
             accValY = (upperACCBitsY << 8) + lowerACCBitsY
             accValY = self.twos_comp(accValY,16)
-            lowerACCBitsZ = self.myACC.readU8(0x34)
-            upperACCBitsZ = self.myACC.readU8(0x35)
+            lowerACCBitsZ = self.myACC.readU8(0x36)
+            upperACCBitsZ = self.myACC.readU8(0x37)
             accValZ= (upperACCBitsZ << 8) + lowerACCBitsZ
             accValZ = self.twos_comp(accValZ,16)
             self.myXQueue.put(accValX/self.myMaxIMUVal)

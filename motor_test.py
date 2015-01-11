@@ -14,11 +14,11 @@ NotificationQueue = Queue.Queue(maxsize=20)
 XQueue = Queue.Queue(maxsize=4)
 YQueue = Queue.Queue(maxsize=4)
 
-myMotor0 = Motor.Motor("P9_14","P9_12",True,0,5000,Motor1TlmQueue,NotificationQueue,period = 02.02,filterDepth = 2, debug= False)
-myMotor1 = Motor.Motor("P9_22","P9_18",True,1,5000,Motor2TlmQueue,NotificationQueue,period = 02.02,filterDepth = 2, debug= False)
-myMotor2 = Motor.Motor("P8_13","P8_11",True,2,5000,Motor3TlmQueue,NotificationQueue,period = 02.02,filterDepth = 2, debug= False)
+myMotor0 = Motor.Motor("P9_14","P9_12",True,0,5000,Motor1TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= False)
+myMotor1 = Motor.Motor("P9_22","P9_18",True,1,5000,Motor2TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= False)
+myMotor2 = Motor.Motor("P8_13","P8_11",True,2,5000,Motor3TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= False)
 
-myIMU = ReadIMU.ReadIMU(0x53,"FAKE",XQueue,YQueue,IMUTlmQueue,NotificationQueue,period=02.02,debug = False)
+myIMU = ReadIMU.ReadIMU(0x53,"FAKE",XQueue,YQueue,IMUTlmQueue,NotificationQueue,maxIMUVal = 256.0,period=0.02,debug = False)
 
 myTelemetryHandler = TelemetryHandler.TelemetryHandler(Motor1TlmQueue, Motor2TlmQueue, Motor3TlmQueue, IMUTlmQueue , NotificationQueue)
 
