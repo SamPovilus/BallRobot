@@ -27,14 +27,15 @@ class CommandHandler(threading.Thread):
                     if e[0] == errno.EPIPE:
                         # remote peer disconnected
                         print "Detected remote disconnect"
+                        return
                     else:
                         # determine and handle different error
                         pass
                 else:
                     print "socket error ", e
                     return
-                break
+                return
             except IOError, e:
             # Hmmm, Can IOError actually be raised by the socket module?
                 print "Got IOError: ", e
-                break
+                return

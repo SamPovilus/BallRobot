@@ -44,17 +44,18 @@ class TelemetryHandler(threading.Thread):
                         if e[0] == errno.EPIPE:
                     # remote peer disconnected
                             print "Detected remote disconnect"
+                            return
                         else:
                     # determine and handle different error
                             pass
                     else:
                         print "socket error ", e
-                        break
-                    break
+                        return
+                    return
                 except IOError, e:
             # Hmmm, Can IOError actually be raised by the socket module?
                     print "Got IOError: ", e
-                    break
+                    return
             
     def QueueLookup(self,id):
         if(id == Globals.MOTOR_NOTIFICATION_OFFSET + 0):
