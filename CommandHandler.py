@@ -18,5 +18,23 @@ class CommandHandler(threading.Thread):
 
     def run(self):
         while 1:
-            command = self.myConn.recv(COMMAND_SIZE)
-            print str(command)
+            try:
+                command = self.myConn.recv(COMMAND_SIZE)
+                print str(command)
+            except socket.error, e:
+                if isinstance(e.args, tuple):
+                    print "errno is %d" % e[0]
+                    if e[0] == errno.EPIPE:
+                        # remote peer disconnected
+                        print "Detected remote disconnect"
+                    else:
+                        # determine and handle different error
+                        pass
+                else:
+                    print "socket error ", e
+                    return
+                break
+            except IOError, e:
+            # Hmmm, Can IOError actually be raised by the socket module?
+                print "Got IOError: ", e
+                break

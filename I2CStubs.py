@@ -8,4 +8,4 @@ class I2CStubs():
     
     def readU8(self,addr):
         #print "read8 addr: " + str(addr)
-        return 1
+        return 0
