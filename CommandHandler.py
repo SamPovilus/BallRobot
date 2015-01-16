@@ -4,6 +4,7 @@ import Globals
 import socket
 import errno
 import binascii
+import struct
 
 COMMAND_SIZE = 20
 
@@ -20,7 +21,6 @@ class CommandHandler(threading.Thread):
         while 1:
             try:
                 command = self.myConn.recv(COMMAND_SIZE)
-                print str(command)
             except socket.error, e:
                 if isinstance(e.args, tuple):
                     print "errno is %d" % e[0]
@@ -39,3 +39,8 @@ class CommandHandler(threading.Thread):
             # Hmmm, Can IOError actually be raised by the socket module?
                 print "Got IOError: ", e
                 return
+            print str(command)
+            commandUnpacked = struct.unpack('>L12s',command)
+            print commandUnpacked
+            dataUnpacked = struct.unpack('>ffL',commandUnpacked[1])
+            print dataUnpacked
