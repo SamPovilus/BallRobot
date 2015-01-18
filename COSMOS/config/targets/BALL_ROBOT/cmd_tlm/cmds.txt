@@ -1,4 +1,4 @@
-COMMAND BALL_ROBOT ACC_OVERIDE_VALUES BIG_ENDIAN "Set values to override in the accelermoeter"
+COMMAND BALL_ROBOT ACC_OVERRIDE_VALUES BIG_ENDIAN "Set values to override in the accelermoeter"
   APPEND_ID_PARAMETER PKTID       32 UINT  0 100 12           "Id"
   APPEND_PARAMETER    ACC_X  16 INT MIN_INT16 MAX_INT16        0    "X value to override"
   APPEND_PARAMETER    ACC_Y  16 INT MIN_INT16 MAX_INT16        0    "Y value to override"
@@ -6,7 +6,7 @@ COMMAND BALL_ROBOT ACC_OVERIDE_VALUES BIG_ENDIAN "Set values to override in the 
   APPEND_PARAMETER    FILL_0 16 UINT 0         0                0    "fill 0"
   APPEND_PARAMETER    FILL_1 32 UINT 0         0                0    "fill 1"
 
-COMMAND BALL_ROBOT ACC_OVERIDE_AXIS BIG_ENDIAN "Set axises to override in the accelermoeter"
+COMMAND BALL_ROBOT ACC_OVERRIDE_AXIS BIG_ENDIAN "Set axises to override in the accelermoeter"
   APPEND_ID_PARAMETER PKTID       32 UINT  0 100 13           "Id"
   APPEND_PARAMETER OVERRIDE_X 8 UINT 0 1 0 "override x"
     STATE FALSE 0
