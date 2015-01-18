@@ -50,3 +50,7 @@ class CommandHandler(threading.Thread):
                 dataUnpacked = struct.unpack('>BBBBLL',commandUnpacked[1])
                 print "Overrides x: " + str(dataUnpacked[0]) + " y: " +  str(dataUnpacked[1]) + " z: " + str(dataUnpacked[2])
                 self.myReadIMU.setOverrideAxis(dataUnpacked[0],dataUnpacked[1],dataUnpacked[2])
+            if commandUnpacked[0] == Globals.ACC_SET_DIVISOR:
+                dataUnpacked = struct.unpack('>fLL',commandUnpacked[1])
+                print "accelrometer divisor set to: " + str(dataUnpacked[0])
+                self.myReadIMU.setAccDivisor(dataUnpacked[0])

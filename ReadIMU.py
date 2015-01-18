@@ -101,3 +101,5 @@ class ReadIMU(threading.Thread):
         self.yOverrideAxis = y
         self.zOverrideAxis = z
         
+    def setAccDivisor(self,divisor):
+        self.myMaxIMUVal = divisor
