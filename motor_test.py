@@ -13,6 +13,22 @@ TCP_IP = ""
 TCP_PORT = 5005
 
 
+
+Motor1TlmQueue = Queue.Queue(maxsize=10)
+Motor2TlmQueue = Queue.Queue(maxsize=10)
+Motor3TlmQueue = Queue.Queue(maxsize=10)
+IMUTlmQueue = Queue.Queue(maxsize=10)
+NotificationQueue = Queue.Queue(maxsize=20)
+CommandQueue = Queue.Queue(maxsize=10)
+XQueue = Queue.Queue(maxsize=4)
+YQueue = Queue.Queue(maxsize=4)
+
+myMotor0 = Motor.Motor("P9_14","P9_12",True,0,5000,Motor1TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= False)
+myMotor1 = Motor.Motor("P9_22","P9_18",True,1,5000,Motor2TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= False)
+myMotor2 = Motor.Motor("P8_13","P8_11",True,2,5000,Motor3TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= False)
+
+myIMU = ReadIMU.ReadIMU(0x53,"FAKE",XQueue,YQueue,IMUTlmQueue,NotificationQueue,maxIMUVal = 256.0,period=0.02,debug = False)
+
 def TcpHandler():
     while 1:
         print "Entered tcp handler"
@@ -23,36 +39,20 @@ def TcpHandler():
         conn, addr = s.accept()
         print 'Connection address:', addr
         myTelemetryHandler = TelemetryHandler.TelemetryHandler(Motor1TlmQueue, Motor2TlmQueue, Motor3TlmQueue, IMUTlmQueue , NotificationQueue, conn,debug=False)
-        myCommandHandler= CommandHandler.CommandHandler(CommandQueue,conn)
+        myCommandHandler= CommandHandler.CommandHandler(CommandQueue,myIMU,conn)
         myTelemetryHandler.daemon = True
         myCommandHandler.daemon = True
         myTelemetryHandler.start()
         myCommandHandler.start()
         while(myTelemetryHandler.isAlive() and myCommandHandler.isAlive()):
             sleep(2)
-            print "telem and command threads alive"
         
-
 
 tcpThread = threading.Thread(target=TcpHandler)
 tcpThread.daemon = True
 tcpThread.start()
 
-Motor1TlmQueue = Queue.Queue(maxsize=10)
-Motor2TlmQueue = Queue.Queue(maxsize=10)
-Motor3TlmQueue = Queue.Queue(maxsize=10)
-IMUTlmQueue = Queue.Queue(maxsize=10)
-NotificationQueue = Queue.Queue(maxsize=20)
-CommandQueue = Queue.Queue(maxsize=10)
 
-XQueue = Queue.Queue(maxsize=4)
-YQueue = Queue.Queue(maxsize=4)
-
-myMotor0 = Motor.Motor("P9_14","P9_12",True,0,5000,Motor1TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= False)
-myMotor1 = Motor.Motor("P9_22","P9_18",True,1,5000,Motor2TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= False)
-myMotor2 = Motor.Motor("P8_13","P8_11",True,2,5000,Motor3TlmQueue,NotificationQueue,period = 0.02,filterDepth = 2, debug= False)
-
-myIMU = ReadIMU.ReadIMU(0x53,"FAKE",XQueue,YQueue,IMUTlmQueue,NotificationQueue,maxIMUVal = 256.0,period=0.02,debug = False)
 
 
 myMotor0.daemon = True

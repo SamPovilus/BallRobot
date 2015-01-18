@@ -11,12 +11,14 @@ COMMAND_SIZE = 20
 class CommandHandler(threading.Thread):
     myCommandQueue = None
     myConn = None
+    myReadIMU = None
     
-    def __init__(self,commandQ,conn):
+    def __init__(self,commandQ,ReadIMU,conn):
         self.myCommandQueue = commandQ
         super(CommandHandler, self).__init__()
         self.myConn = conn
-
+        self.myReadIMU = ReadIMU
+        
     def run(self):
         while 1:
             try:
@@ -39,8 +41,12 @@ class CommandHandler(threading.Thread):
             # Hmmm, Can IOError actually be raised by the socket module?
                 print "Got IOError: ", e
                 return
-            print str(command)
             commandUnpacked = struct.unpack('>L12s',command)
-            print commandUnpacked
-            dataUnpacked = struct.unpack('>ffL',commandUnpacked[1])
-            print dataUnpacked
+            if commandUnpacked[0] == Globals.ACC_OVERRIDE_VALUES:
+                dataUnpacked = struct.unpack('>hhhhl',commandUnpacked[1])
+                print "Values x: " + str(dataUnpacked[0]) + " y: " +  str(dataUnpacked[1]) + " z: " + str(dataUnpacked[2])
+                self.myReadIMU.setOverrideValues(dataUnpacked[0],dataUnpacked[1],dataUnpacked[2])
+            if commandUnpacked[0] == Globals.ACC_OVERRIDE_AXIS:
+                dataUnpacked = struct.unpack('>BBBBLL',commandUnpacked[1])
+                print "Overrides x: " + str(dataUnpacked[0]) + " y: " +  str(dataUnpacked[1]) + " z: " + str(dataUnpacked[2])
+                self.myReadIMU.setOverrideAxis(dataUnpacked[0],dataUnpacked[1],dataUnpacked[2])

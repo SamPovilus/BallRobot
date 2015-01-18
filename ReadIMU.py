@@ -21,6 +21,15 @@ class ReadIMU(threading.Thread):
     myTelemQueue = None
     myNotificationQueue = None
 
+    xOverride = 0
+    yOverride = 0
+    zOverride = 0
+
+    xOverrideAxis = False
+    yOverrideAxis = False
+    zOverrideAxis = False
+
+
     def __init__(self,ACCAddress,GyroAddress,XQueue,YQueue,TlmQueue,NotificationQueue,period=0.02,maxIMUVal=512.0,debug=False):
         print "IMU thread started"
         self.myACC = I2C(ACCAddress)
@@ -40,18 +49,19 @@ class ReadIMU(threading.Thread):
         
     def run(self):
 	while 1:
-            lowerACCBitsX = self.myACC.readU8(0x32)
-            upperACCBitsX = self.myACC.readU8(0x33)
-            accValX = (upperACCBitsX << 8) + lowerACCBitsX
-            accValX = self.twos_comp(accValX,16)
-            lowerACCBitsY = self.myACC.readU8(0x34)
-            upperACCBitsY = self.myACC.readU8(0x35)
-            accValY = (upperACCBitsY << 8) + lowerACCBitsY
-            accValY = self.twos_comp(accValY,16)
-            lowerACCBitsZ = self.myACC.readU8(0x36)
-            upperACCBitsZ = self.myACC.readU8(0x37)
-            accValZ= (upperACCBitsZ << 8) + lowerACCBitsZ
-            accValZ = self.twos_comp(accValZ,16)
+            if(self.xOverrideAxis == False):
+                accValX = self.getAxis(0)
+            else:
+                accValX = self.xOverride
+            if(self.yOverrideAxis == False):
+                accValY = self.getAxis(1)
+            else:
+                accValY = self.yOverride
+            if(self.zOverrideAxis == False):
+                accValZ = self.getAxis(2)
+            else:
+                accValZ = self.zOverride
+                
             self.myXQueue.put(accValX/self.myMaxIMUVal)
             self.myYQueue.put(accValY/self.myMaxIMUVal)
             self.myTelemQueue.put(struct.pack('>LLfff',0xdeadbeef,Globals.IMU_ID_ACC+Globals.IMU_NOTIFICATION_OFFSET,(accValX/self.myMaxIMUVal),(accValY/self.myMaxIMUVal),(accValZ/self.myMaxIMUVal)))
@@ -65,3 +75,29 @@ class ReadIMU(threading.Thread):
         if( (val&(1<<(bits-1))) != 0 ):
             val = val - (1<<bits)
         return val
+
+    def getAxis(self,axis):
+        lowerACCBits = self.myACC.readU8(0x32 + axis*2)
+        upperACCBits = self.myACC.readU8(0x33 + axis*2)
+        accVal = (upperACCBits << 8) + lowerACCBits
+        accVal = self.twos_comp(accVal,16)
+        return accVal
+
+    def setOverrideValues(self,x,y,z):
+        print "Values x: " + str(x) + " y: " +  str(y) + " z: " + str(z)
+        self.xOverride = x
+        self.yOverride = y
+        self.zOverride = z
+
+    def setOverrideAxis(self,x,y,z):
+        if(x):
+            print "overriding x"
+        if(y):
+            print "overriding y"
+        if(z):
+            print "pverriding z"    
+
+        self.xOverrideAxis = x
+        self.yOverrideAxis = y
+        self.zOverrideAxis = z
+        

@@ -7,3 +7,4 @@ def output(portNum,dir):
 
 OUT = 1
 HIGH = 11
+LOW = 12
