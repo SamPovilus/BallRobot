@@ -49,6 +49,12 @@ class Motor(threading.Thread):
         self.myDesiredSpeed = -58.2750582751*(abs(speed)**4) + 221.8337218337*(abs(speed)**3) - 321.3286713287*(abs(speed)**2) + 258.7140637141*abs(speed) - 0.8391608392
         if speed < 0.0:
             self.myDesiredSpeed = -self.myDesiredSpeed
+        if(self.myDesiredSpeed>100.0):
+            print "ERROR current speed out of range +" + str(currentSpeed)
+            self.myDesiredSpeed=100.0
+        if(self.myDesiredSpeed<-100.0):
+            print "ERROR current speed out of range -" + str(currentSpeed)
+            self.myDesiredSpeed=-100.0
         self.myTelemQueue.put(struct.pack('>LLffL',0xdeadbeef,self.myMotorNumber+Globals.MOTOR_NOTIFICATION_OFFSET,self.myDesiredSpeed,float(speed),0x1badcafe))
         self.myNotificationQueue.put(self.myMotorNumber+Globals.MOTOR_NOTIFICATION_OFFSET)
         
@@ -58,12 +64,6 @@ class Motor(threading.Thread):
 #            self.pastSpeeds.append(self.myDesiredSpeed)
 #            currentSpeed = numpy.mean(self.pastSpeeds)
 #            currentSpeed = self.myDesiredSpeed
-            if(self.myDesiredSpeed>100.0):
-              print "ERROR current speed out of range +" + str(currentSpeed)
-              self.myDesiredSpeed=100.0
-            if(self.myDesiredSpeed<-100.0):
-              print "ERROR current speed out of range -" + str(currentSpeed)
-              self.myDesiredSpeed=-100.0
             PWMoutput.set_duty_cycle(self.myPWMPort,abs(self.myDesiredSpeed)+self.myMotorDeadband)
             if(self.myDesiredSpeed < 0.0):
                 self.myInvertPort.invert()
