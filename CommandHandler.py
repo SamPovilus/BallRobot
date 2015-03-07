@@ -44,13 +44,25 @@ class CommandHandler(threading.Thread):
             commandUnpacked = struct.unpack('>L12s',command)
             if commandUnpacked[0] == Globals.ACC_OVERRIDE_VALUES:
                 dataUnpacked = struct.unpack('>hhhhl',commandUnpacked[1])
-                print "Values x: " + str(dataUnpacked[0]) + " y: " +  str(dataUnpacked[1]) + " z: " + str(dataUnpacked[2])
-                self.myReadIMU.setOverrideValues(dataUnpacked[0],dataUnpacked[1],dataUnpacked[2])
+                print "Acceleromoter values x: " + str(dataUnpacked[0]) + " y: " +  str(dataUnpacked[1]) + " z: " + str(dataUnpacked[2])
+                self.myReadIMU.setOverrideValuesAcc(dataUnpacked[0],dataUnpacked[1],dataUnpacked[2])
             if commandUnpacked[0] == Globals.ACC_OVERRIDE_AXIS:
                 dataUnpacked = struct.unpack('>BBBBLL',commandUnpacked[1])
-                print "Overrides x: " + str(dataUnpacked[0]) + " y: " +  str(dataUnpacked[1]) + " z: " + str(dataUnpacked[2])
-                self.myReadIMU.setOverrideAxis(dataUnpacked[0],dataUnpacked[1],dataUnpacked[2])
+                print "Accelerometer overrides x: " + str(dataUnpacked[0]) + " y: " +  str(dataUnpacked[1]) + " z: " + str(dataUnpacked[2])
+                self.myReadIMU.setOverrideAxisAcc(dataUnpacked[0],dataUnpacked[1],dataUnpacked[2])
             if commandUnpacked[0] == Globals.ACC_SET_DIVISOR:
                 dataUnpacked = struct.unpack('>fLL',commandUnpacked[1])
-                print "accelrometer divisor set to: " + str(dataUnpacked[0])
-                self.myReadIMU.setAccDivisor(dataUnpacked[0])
+                print "Accelrometer divisor set to: " + str(dataUnpacked[0])
+                self.myReadIMU.setAccDivisorAcc(dataUnpacked[0])
+            if commandUnpacked[0] == Globals.GYRO_OVERRIDE_VALUES:
+                dataUnpacked = struct.unpack('>hhhhl',commandUnpacked[1])
+                print "Gyro values x: " + str(dataUnpacked[0]) + " y: " +  str(dataUnpacked[1]) + " z: " + str(dataUnpacked[2])
+                self.myReadIMU.setOverrideValuesGyro(dataUnpacked[0],dataUnpacked[1],dataUnpacked[2])
+            if commandUnpacked[0] == Globals.GYRO_OVERRIDE_AXIS:
+                dataUnpacked = struct.unpack('>BBBBLL',commandUnpacked[1])
+                print "Gyro overrides x: " + str(dataUnpacked[0]) + " y: " +  str(dataUnpacked[1]) + " z: " + str(dataUnpacked[2])
+                self.myReadIMU.setOverrideAxisGyro(dataUnpacked[0],dataUnpacked[1],dataUnpacked[2])
+            if commandUnpacked[0] == Globals.GYRO_SET_DIVISOR:
+                dataUnpacked = struct.unpack('>fLL',commandUnpacked[1])
+                print "Gyro accelrometer divisor set to: " + str(dataUnpacked[0])
+                self.myReadIMU.setAccDivisorGyro(dataUnpacked[0])

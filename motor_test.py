@@ -20,14 +20,16 @@ Motor3TlmQueue = Queue.Queue(maxsize=100)
 IMUTlmQueue = Queue.Queue(maxsize=100)
 NotificationQueue = Queue.Queue(maxsize=200)
 CommandQueue = Queue.Queue(maxsize=100)
-XQueue = Queue.Queue(maxsize=40)
-YQueue = Queue.Queue(maxsize=40)
+XAccQueue = Queue.Queue(maxsize=40)
+YAccQueue = Queue.Queue(maxsize=40)
+XGyroQueue = Queue.Queue(maxsize=40)
+YGyroQueue = Queue.Queue(maxsize=40)
 
 myMotor0 = Motor.Motor("P9_14","P9_12",True,0,5000,Motor1TlmQueue,NotificationQueue,period = 0.02,filterDepth = 1, debug= False)
 myMotor1 = Motor.Motor("P9_22","P9_18",True,1,5000,Motor2TlmQueue,NotificationQueue,period = 0.02,filterDepth = 1, debug= False)
 myMotor2 = Motor.Motor("P8_13","P8_11",True,2,5000,Motor3TlmQueue,NotificationQueue,period = 0.02,filterDepth = 1, debug= False)
 
-myIMU = ReadIMU.ReadIMU(0x53,"FAKE",XQueue,YQueue,IMUTlmQueue,NotificationQueue,maxIMUVal = 256.0,period=0.02,debug = False)
+myIMU = ReadIMU.ReadIMU(0x53,"FAKE",XAccQueue,YAccQueue,XGyroQueue,YGyroQueue,IMUTlmQueue,NotificationQueue,maxAccVal = 256.0, maxGyroVal = 128.0,period=0.02,debug = False)
 
 def TcpHandler():
     while 1:
@@ -73,7 +75,9 @@ while 1:
     #    for i in speedList.length():
     #        speedList[i] = float(speedList[i])
     #try:
-    speedList = TransformXYRotZToMotor.TransformXYRotZToMotor(XQueue.get(),YQueue.get(),0,debug = False)
+    speedList = TransformXYRotZToMotor.TransformXYRotZToMotor(XAccQueue.get(),YAccQueue.get(),0,debug = False)
+    XGyroQueue.get()
+    YGyroQueue.get()
     myMotor0.set_speed((speedList[0]))
     myMotor1.set_speed((speedList[1]))
     myMotor2.set_speed((speedList[2]))
