@@ -74,3 +74,7 @@ class TelemetryHandler(threading.Thread):
             if self.myDebug:
                 print "IMU ACC QUEUE"
             return self.myIMUQ
+        if(id == Globals.IMU_NOTIFICATION_OFFSET + Globals.IMU_ID_GYRO):
+            if self.myDebug:
+                print "IMU GYRO QUEUE"
+            return self.myIMUQ

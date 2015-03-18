@@ -26,4 +26,11 @@ TELEMETRY BALL_ROBOT ACC BIG_ENDIAN "Imu accelerometer values"
   APPEND_ITEM    Y 32 FLOAT             "Y"
   APPEND_ITEM    Z         32 FLOAT    "Z"
 
+TELEMETRY BALL_ROBOT GYRO BIG_ENDIAN "Imu accelerometer values"
+  APPEND_ID_ITEM SYNC        32 UINT 0xdeadbeef "sync"
+  APPEND_ID_ITEM PKTID       32 UINT  220          "Id"
+  APPEND_ITEM    X  32 FLOAT             "X"
+  APPEND_ITEM    Y 32 FLOAT             "Y"
+  APPEND_ITEM    Z         32 FLOAT    "Z"
+
 
