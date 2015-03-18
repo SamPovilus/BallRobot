@@ -40,8 +40,10 @@ class Motor(threading.Thread):
 	self.myTelemQueue = telemQueue
 	self.myNotificationQueue = notificationQueue
 	if dirInverted:
+	    print "Motor " + str(self.myMotorNumber) + " is inverted"
 	    self.myDirInverted = -1
 	else:
+            print "Motor " + str(self.myMotorNumber) + " is not inverted"
             self.myDirInverted = 1
     def set_speed(self,speed):
         #from open office f(x) =  - 58.2750582751x^4 + 221.8337218337x^3 - 321.3286713287x^2 + 258.7140637141x - 0.8391608392
@@ -59,10 +61,10 @@ class Motor(threading.Thread):
 #            currentSpeed = numpy.mean(self.pastSpeeds)
 #            currentSpeed = self.myDesiredSpeed
             if(self.myDesiredSpeed>100.0):
-              print "ERROR current speed out of range +" + str(currentSpeed)
+              print "ERROR current speed out of range +" + str(self.myDesiredSpeed)
               self.myDesiredSpeed=100.0
             if(self.myDesiredSpeed<-100.0):
-              print "ERROR current speed out of range -" + str(currentSpeed)
+              print "ERROR current speed out of range -" + str(self.myDesiredSpeed)
               self.myDesiredSpeed=-100.0
             PWMoutput.set_duty_cycle(self.myPWMPort,abs(self.myDesiredSpeed)+self.myMotorDeadband)
             if(self.myDesiredSpeed < 0.0):
