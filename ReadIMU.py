@@ -82,7 +82,7 @@ class ReadIMU(threading.Thread):
 
 # Gyro
             if(self.xOverrideAxisGyro == False):
-                gyroValX = 11.1
+                gyroValX = self.getAxisGyro(0)
             else:
                 gyroValX = self.xOverrideGyro
             if(self.yOverrideAxisGyro == False):
@@ -116,6 +116,13 @@ class ReadIMU(threading.Thread):
         accVal = (upperACCBits << 8) + lowerACCBits
         accVal = self.twos_comp(accVal,16)
         return accVal
+
+    def getAxisGyro(self,axis):
+        upperGyroBits = self.myGyro.readU8(0x1d + axis*2)
+        lowerGyroBits = self.myGyro.readU8(0x1e + axis*2)
+        gyroVal = (upperGyroBits << 8) + lowerGyroBits
+        gyroVal = self.twos_comp(gyroVal,16)
+        return gyroVal
 
     def setOverrideValuesAcc(self,x,y,z):
         print "Acc override values x: " + str(x) + " y: " +  str(y) + " z: " + str(z)
