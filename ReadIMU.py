@@ -9,6 +9,8 @@ from time import sleep
 import Queue
 import struct
 import Globals
+import collections
+
 
 class ReadIMU(threading.Thread):
     myACC = None
