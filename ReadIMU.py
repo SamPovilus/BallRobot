@@ -36,7 +36,11 @@ class ReadIMU(threading.Thread):
     yOverrideAxisGyro = False
     zOverrideAxisGyro = False
 
-
+    accXFilter = None
+    accYFilter = None
+    gyroXFilter = None
+    gyroYFilter = None
+    
     def __init__(self,ACCAddress,GyroAddress,XAccQueue,YAccQueue,XGyroQueue,YGyroQueue,TlmQueue,NotificationQueue,period=0.02,maxAccVal=512.0,maxGyroVal=512.0,debug=False):
         print "IMU thread started"
         self.myACC = I2C(ACCAddress)
@@ -58,10 +62,18 @@ class ReadIMU(threading.Thread):
         self.myDebug = debug
         self.myTelemQueue = TlmQueue
         self.myNotificationQueue = NotificationQueue
+
+        #TODO define this better
+        filterDepth = 10
+        self.accXFilter =  collections.deque(maxlen=filterDepth)
+        self.accYFilter =  collections.deque(maxlen=filterDepth)
+        self.gyroXFilter =  collections.deque(maxlen=filterDepth)
+        self.gyroYFilter =  collections.deque(maxlen=filterDepth)
         
     def run(self):
-#Acc
+        loopCount = 0
 	while 1:
+#Acc
             if(self.xOverrideAxisAcc == False):
                 accValX = self.getAxisAcc(0)
             else:
@@ -75,9 +87,14 @@ class ReadIMU(threading.Thread):
             else:
                 accValZ = self.zOverrideAcc
 
-            self.myXAccQueue.put(accValX/self.myMaxAccVal)
-            self.myYAccQueue.put(accValY/self.myMaxAccVal)
-            self.myTelemQueue.put(struct.pack('>LLfff',0xdeadbeef,Globals.IMU_ID_ACC+Globals.IMU_NOTIFICATION_OFFSET,(accValX/self.myMaxAccVal),(accValY/self.myMaxAccVal),(accValZ/self.myMaxAccVal)))
+            self.accXFilter.append(accValX/self.myMaxAccVal)
+            self.accYFilter.append(accValY/self.myMaxAccVal)
+            xAccAvg = numpy.mean(self.accXFilter)
+            yAccAvg = numpy.mean(self.accYFilter)
+            self.myXAccQueue.put(xAccAvg)
+            self.myYAccQueue.put(xAccAvg)
+            self.myTelemQueue.put(struct.pack('>LLfff',0xdeadbeef,Globals.IMU_ID_ACC+Globals.IMU_NOTIFICATION_OFFSET,xAccAvg,yAccAvg,(accValZ/self.myMaxAccVal)))
+            
             self.myNotificationQueue.put(Globals.IMU_ID_ACC+Globals.IMU_NOTIFICATION_OFFSET)
 
 # Gyro

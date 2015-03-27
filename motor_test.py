@@ -29,7 +29,7 @@ myMotor0 = Motor.Motor("P9_14","P9_12",True,0,5000,Motor1TlmQueue,NotificationQu
 myMotor1 = Motor.Motor("P9_22","P9_18",True,1,5000,Motor2TlmQueue,NotificationQueue,period = 0.02,filterDepth = 1, debug= False)
 myMotor2 = Motor.Motor("P8_13","P8_11",True,2,5000,Motor3TlmQueue,NotificationQueue,period = 0.02,filterDepth = 1, debug= False)
 
-myIMU = ReadIMU.ReadIMU(0x53,0x68,XAccQueue,YAccQueue,XGyroQueue,YGyroQueue,IMUTlmQueue,NotificationQueue,maxAccVal = 256.0, maxGyroVal = 128.0,period=0.02,debug = False)
+myIMU = ReadIMU.ReadIMU(0x53,0x68,XAccQueue,YAccQueue,XGyroQueue,YGyroQueue,IMUTlmQueue,NotificationQueue,maxAccVal = 256.0, maxGyroVal = 128.0,period=0.002,debug = False)
 
 def TcpHandler():
     while 1:
