@@ -10,7 +10,7 @@ import Queue
 import struct
 import Globals
 import collections
-
+import numpy
 
 class ReadIMU(threading.Thread):
     myACC = None
