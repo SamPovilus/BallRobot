@@ -53,7 +53,7 @@ class CommandHandler(threading.Thread):
             if commandUnpacked[0] == Globals.ACC_SET_DIVISOR:
                 dataUnpacked = struct.unpack('>fLL',commandUnpacked[1])
                 print "Accelrometer divisor set to: " + str(dataUnpacked[0])
-                self.myReadIMU.setAccDivisorAcc(dataUnpacked[0])
+                self.myReadIMU.setAccDivisor(dataUnpacked[0])
             if commandUnpacked[0] == Globals.GYRO_OVERRIDE_VALUES:
                 dataUnpacked = struct.unpack('>hhhhl',commandUnpacked[1])
                 print "Gyro values x: " + str(dataUnpacked[0]) + " y: " +  str(dataUnpacked[1]) + " z: " + str(dataUnpacked[2])
@@ -65,4 +65,4 @@ class CommandHandler(threading.Thread):
             if commandUnpacked[0] == Globals.GYRO_SET_DIVISOR:
                 dataUnpacked = struct.unpack('>fLL',commandUnpacked[1])
                 print "Gyro accelrometer divisor set to: " + str(dataUnpacked[0])
-                self.myReadIMU.setAccDivisorGyro(dataUnpacked[0])
+                self.myReadIMU.setGyroDivisor(dataUnpacked[0])
