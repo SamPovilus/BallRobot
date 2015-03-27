@@ -52,10 +52,10 @@ class Motor(threading.Thread):
         if speed < 0.0:
             self.myDesiredSpeed = -self.myDesiredSpeed
         if(self.myDesiredSpeed>100.0):
-            print "ERROR current speed out of range +" + str(myDesiredSpeed)
+            print "ERROR current speed out of range +" + str(self.myDesiredSpeed)
             self.myDesiredSpeed=100.0
         if(self.myDesiredSpeed<-100.0):
-            print "ERROR current speed out of range -" + str(myDesiredSpeed)
+            print "ERROR current speed out of range -" + str(self.myDesiredSpeed)
             self.myDesiredSpeed=-100.0
         self.myTelemQueue.put(struct.pack('>LLffL',0xdeadbeef,self.myMotorNumber+Globals.MOTOR_NOTIFICATION_OFFSET,self.myDesiredSpeed,float(speed),0x1badcafe))
         self.myNotificationQueue.put(self.myMotorNumber+Globals.MOTOR_NOTIFICATION_OFFSET)
