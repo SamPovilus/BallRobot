@@ -26,10 +26,15 @@ class ReadIMU(threading.Thread):
     myTelemQueue = None
     myNotificationQueue = None
 
-    xOverride = 0
-    yOverride = 0
-    zOverride = 0
+    xOverrideAcc = 0
+    yOverrideAcc = 0
+    zOverrideAcc = 0
 
+    xOverrideGyro = 0
+    yOverrideGyro = 0
+    zOverrideGyro = 0
+
+    
     xOverrideAxisAcc = False
     yOverrideAxisAcc = False
     zOverrideAxisAcc = False
