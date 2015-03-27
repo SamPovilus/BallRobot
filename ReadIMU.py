@@ -99,7 +99,7 @@ class ReadIMU(threading.Thread):
             xAccAvg = numpy.mean(self.accXFilter)
             yAccAvg = numpy.mean(self.accYFilter)
             self.myXAccQueue.put(xAccAvg)
-            self.myYAccQueue.put(xAccAvg)
+            self.myYAccQueue.put(yAccAvg)
             self.myTelemQueue.put(struct.pack('>LLfff',0xdeadbeef,Globals.IMU_ID_ACC+Globals.IMU_NOTIFICATION_OFFSET,xAccAvg,yAccAvg,(accValZ/self.myMaxAccVal)))
             
             self.myNotificationQueue.put(Globals.IMU_ID_ACC+Globals.IMU_NOTIFICATION_OFFSET)
