@@ -12,12 +12,16 @@ class CommandHandler(threading.Thread):
     myCommandQueue = None
     myConn = None
     myReadIMU = None
+    myPIDX = None
+    myPIDY = None
     
-    def __init__(self,commandQ,ReadIMU,conn):
+    def __init__(self,commandQ,ReadIMU,PIDX,PIDY,conn):
         self.myCommandQueue = commandQ
         super(CommandHandler, self).__init__()
         self.myConn = conn
         self.myReadIMU = ReadIMU
+        self.myPIDX = PIDX
+        self.myPIDY = PIDY
         
     def run(self):
         while 1:
@@ -68,8 +72,9 @@ class CommandHandler(threading.Thread):
                 self.myReadIMU.setGyroDivisor(dataUnpacked[0])
             if commandUnpacked[0] == Globals.SET_PID_X_COIEFF:
                 dataUnpacked = struct.unpack('>fff',commandUnpacked[1])
-                print "PID X P: " + str(dataUnpacked[0]) + " I: " +  str(dataUnpacked[1]) + " D: " + str(dataUnpacked[2])                  
+                print "PID X1 P: " + str(dataUnpacked[0]) + " I: " +  str(dataUnpacked[1]) + " D: " + str(dataUnpacked[2])                  
+                myPIDX.set_PID(dataUnpacked[0],dataUnpacked[1],dataUnpacked[1])
             if commandUnpacked[0] == Globals.SET_PID_Y_COIEFF:
                 dataUnpacked = struct.unpack('>fff',commandUnpacked[1])
                 print "PID Y P: " + str(dataUnpacked[0]) + " I: " +  str(dataUnpacked[1]) + " D: " + str(dataUnpacked[2])
-                  
+                myPIDY.set_PID(dataUnpacked[0],dataUnpacked[1],dataUnpacked[1])

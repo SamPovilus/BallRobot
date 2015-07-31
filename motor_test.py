@@ -1,6 +1,7 @@
 import Motor
 import ReadIMU
 import TransformXYRotZToMotor
+import PID
 import Queue
 from time import sleep
 import Globals
@@ -26,6 +27,9 @@ YGyroQueue = Queue.Queue(maxsize=40)
 myMotor0 = Motor.Motor("P9_14","P9_12",True,0,10000,Motor1TlmQueue,NotificationQueue,period = 0.02,filterDepth = 10, debug= False)
 myMotor1 = Motor.Motor("P9_22","P9_18",True,1,10000,Motor2TlmQueue,NotificationQueue,period = 0.02,filterDepth = 10, debug= False)
 myMotor2 = Motor.Motor("P8_13","P8_11",True,2,10000,Motor3TlmQueue,NotificationQueue,period = 0.02,filterDepth = 10, debug= False)
+
+myPIDX = PID.PID()
+myPIDY = PID.PID()
 
 myIMU = ReadIMU.ReadIMU(0x53,0x68,XAccQueue,YAccQueue,XGyroQueue,YGyroQueue,IMUTlmQueue,NotificationQueue,maxAccVal = 256.0, maxGyroVal = 128.0,period=0.002,debug = False)
 
@@ -64,20 +68,8 @@ myIMU.start()
 
 i = 0
 
-myXP = 1.0
-myYP = 1.0
-myXD = 1.0
-myYD = 1.0
-
-gyroX = 0.0
-gyroY = 0.0
-accX = 0.0
-accY = 0.0
-
-lastGyroX = 0.0
-lastGyroY = 0.0
-lastAccX = 0.0
-lastAccY = 0.0
+xval = 0.0
+yval = 0.0
 
 while 1:
     #    speed = input('Enter motor speeds seperated by commas: ')
@@ -85,25 +77,9 @@ while 1:
     #    for i in speedList.length():
     #        speedList[i] = float(speedList[i])
     #try:
-    lastGyroX = gyroX
-    gyroX = XGyroQueue.get()
-    dGyroX = gyroX - lastGyroX
+    xval = myPIDX.process(XAccQueue.get(),XGyroQueue.get());
+    yval = myPIDY.process(YAccQueue.get(),YGyroQueue.get());
 
-    lastGyroY = gyroY
-    gyroY = YGyroQueue.get()
-    dGyroY = gyroY - lastGyroY
-
-    lastAccX = accX
-    accX = XAccQueue.get()
-    dAccX = accX - lastAccX
-
-    lastAccY = accY
-    accY = YAccQueue.get()
-    dAccY = accY - lastAccY
-
-    pidX = myXP * accX + myXD * gyroX
-    pidY = myYP * accY + myYD * gyroY
-    
     speedList = TransformXYRotZToMotor.TransformXYRotZToMotor(pidX,pidY,0,debug = False)
     myMotor0.set_speed((speedList[0]))
     myMotor1.set_speed((speedList[1]))
