@@ -56,4 +56,14 @@ VERTICALBOX
     NAMED_WIDGET GYRO_DIVISOR TEXTFIELD 12 "512.0"
     BUTTON 'set divisor gyro' 'cmd("BALL_ROBOT GYRO_SET_DIVISOR with PKTID 17, GYRO_DIVISOR #{get_named_widget("GYRO_DIVISOR").text.to_f()}, FILL_1 0, FILL_2 0")'
 
+    NAMED_WIDGET P_X TEXTFIELD 12 "1.0"
+    NAMED_WIDGET I_X TEXTFIELD 12 "1.0"
+    NAMED_WIDGET D_X TEXTFIELD 12 "1.0"
+    BUTTON 'Set PID X' 'cmd("BALL_ROBOT SET_PID_X_COEFF with PKTID 18, X_P #{get_named_widget("P_X").text.to_f()}, X_I #{get_named_widget("I_X").text.to_f()}, X_D #{get_named_widget("D_X").text.to_f()}")'
+
+    NAMED_WIDGET P_Y TEXTFIELD 12 "1.0"
+    NAMED_WIDGET I_Y TEXTFIELD 12 "1.0"
+    NAMED_WIDGET D_Y TEXTFIELD 12 "1.0"
+    BUTTON 'Set PID Y' 'cmd("BALL_ROBOT SET_PID_Y_COEFF with PKTID 19, Y_P #{get_named_widget("P_Y").text.to_f()}, Y_I #{get_named_widget("I_Y").text.to_f()}, Y_D #{get_named_widget("D_Y").text.to_f()}")'
+
 END

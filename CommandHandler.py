@@ -66,3 +66,10 @@ class CommandHandler(threading.Thread):
                 dataUnpacked = struct.unpack('>fLL',commandUnpacked[1])
                 print "Gyro accelrometer divisor set to: " + str(dataUnpacked[0])
                 self.myReadIMU.setGyroDivisor(dataUnpacked[0])
+            if commandUnpacked[0] == Globals.SET_PID_X_COIEFF:
+                dataUnpacked = struct.unpack('>fff',commandUnpacked[1])
+                print "PID X P: " + str(dataUnpacked[0]) + " I: " +  str(dataUnpacked[1]) + " D: " + str(dataUnpacked[2])                  
+            if commandUnpacked[0] == Globals.SET_PID_Y_COIEFF:
+                dataUnpacked = struct.unpack('>fff',commandUnpacked[1])
+                print "PID Y P: " + str(dataUnpacked[0]) + " I: " +  str(dataUnpacked[1]) + " D: " + str(dataUnpacked[2])
+                  
