@@ -80,7 +80,7 @@ while 1:
     xval = myPIDX.process(XAccQueue.get(),XGyroQueue.get());
     yval = myPIDY.process(YAccQueue.get(),YGyroQueue.get());
 
-    speedList = TransformXYRotZToMotor.TransformXYRotZToMotor(pidX,pidY,0,debug = False)
+    speedList = TransformXYRotZToMotor.TransformXYRotZToMotor(xval,yval,0,debug = False)
     myMotor0.set_speed((speedList[0]))
     myMotor1.set_speed((speedList[1]))
     myMotor2.set_speed((speedList[2]))

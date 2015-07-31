@@ -9,6 +9,9 @@ class PID():
     lastGyro = 0.0
     lastAcc = 0.0
 
+    dGyro = 0.0
+    dAcc = 0.0
+
     def set_PID(self,P,I,D):
         self.myP = P;
         self.myI = I;
