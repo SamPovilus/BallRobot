@@ -62,16 +62,39 @@ myMotor1.start()
 myMotor2.start()
 myIMU.start()
 
-i = 0 
+i = 0
+
+myXP = 1.0
+myYP = 1.0
+myXD = 1.0
+myYD = 1.0
+
 while 1:
     #    speed = input('Enter motor speeds seperated by commas: ')
     #    speedList = str(speed).split(",")
     #    for i in speedList.length():
     #        speedList[i] = float(speedList[i])
     #try:
-    speedList = TransformXYRotZToMotor.TransformXYRotZToMotor(XAccQueue.get(),YAccQueue.get(),0,debug = False)
-    XGyroQueue.get()
-    YGyroQueue.get()
+    lastGyroX = gyroX
+    gyroX = XGyroQueue.get()
+    dGyroX = gyroX - lastGyroX
+
+    lastGyroY = gyroY
+    gyroY = YGyroQueue.get()
+    dGyroY = gyroY - lastGyroY
+
+    lastAccX = accX
+    accX = XAccQueue.get()
+    dAccX = accX - lastAccX
+
+    lastAccY = accY
+    accY = YAccQueue.get()
+    dAccY = accY - lastAccy
+
+    pidX = myXP * accX + myXD * gyroX
+    pidY = myYP * accY + myYD * gyroX
+    
+    speedList = TransformXYRotZToMotor.TransformXYRotZToMotor(pidX,pidY,0,debug = False)
     myMotor0.set_speed((speedList[0]))
     myMotor1.set_speed((speedList[1]))
     myMotor2.set_speed((speedList[2]))
