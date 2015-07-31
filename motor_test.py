@@ -69,6 +69,11 @@ myYP = 1.0
 myXD = 1.0
 myYD = 1.0
 
+gyroX = 0.0
+gyroY = 0.0
+accX = 0.0
+accY = 0.0
+
 while 1:
     #    speed = input('Enter motor speeds seperated by commas: ')
     #    speedList = str(speed).split(",")
