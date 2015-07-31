@@ -36,17 +36,17 @@ HORIZONTAL
     NAMED_WIDGET OVERRIDE_ACC_X CHECKBUTTON 'Override acc x'
     NAMED_WIDGET OVERRIDE_ACC_Y CHECKBUTTON 'Override acc y'
     NAMED_WIDGET OVERRIDE_ACC_Z CHECKBUTTON 'Override acc z'
-    BUTTON 'Set' 'cmd("BALL_ROBOT ACC_OVERRIDE_AXIS with PKTID 13, OVERRIDE_ACC_X #{get_named_widget("OVERRIDE_ACC_X").checked} , OVERRIDE_ACC_Y #{get_named_widget("OVERRIDE_ACC_Y").checked}, OVERRIDE_ACC_Z #{get_named_widget("OVERRIDE_ACC_Z").checked}, FILL_0 0, FILL_1 0, FILL_2 0")'
+    BUTTON 'Set acc' 'cmd("BALL_ROBOT ACC_OVERRIDE_AXIS with PKTID 13, OVERRIDE_ACC_X #{get_named_widget("OVERRIDE_ACC_X").checked} , OVERRIDE_ACC_Y #{get_named_widget("OVERRIDE_ACC_Y").checked}, OVERRIDE_ACC_Z #{get_named_widget("OVERRIDE_ACC_Z").checked}, FILL_0 0, FILL_1 0, FILL_2 0")'
 
     NAMED_WIDGET GYRO_X TEXTFIELD 12 "0"
     NAMED_WIDGET GYRO_Y TEXTFIELD 12 "0"
     NAMED_WIDGET GYRO_Z TEXTFIELD 12 "0"
-    BUTTON 'Set acc overrides' 'cmd("BALL_ROBOT GYRO_OVERRIDE_VALUES with PKTID 12, GYRO_X #{get_named_widget("GYRO_X").text.to_i()}, GYRO_Y #{get_named_widget("GYRO_Y").text.to_i()}, GYRO_Z #{get_named_widget("GYRO_Z").text.to_i()}, FILL_0 0, FILL_1 0")'
+    BUTTON 'Set gyro overrides' 'cmd("BALL_ROBOT GYRO_OVERRIDE_VALUES with PKTID 15, GYRO_X #{get_named_widget("GYRO_X").text.to_i()}, GYRO_Y #{get_named_widget("GYRO_Y").text.to_i()}, GYRO_Z #{get_named_widget("GYRO_Z").text.to_i()}, FILL_0 0, FILL_1 0")'
 
     NAMED_WIDGET OVERRIDE_GYRO_X CHECKBUTTON 'Override gyro x'
     NAMED_WIDGET OVERRIDE_GYRO_Y CHECKBUTTON 'Override gyro y'
     NAMED_WIDGET OVERRIDE_GYRO_Z CHECKBUTTON 'Override gyro z'
-    BUTTON 'Set' 'cmd("BALL_ROBOT GYRO_OVERRIDE_AXIS with PKTID 13, OVERRIDE_GYRO_X #{get_named_widget("OVERRIDE_GYRO_X").checked} , OVERRIDE_GYRO_Y #{get_named_widget("OVERRIDE_GYRO_Y").checked}, OVERRIDE_GYRO_Z #{get_named_widget("OVERRIDE_GYRO__Z").checked}, FILL_0 0, FILL_1 0, FILL_2 0")'
+    BUTTON 'Set gyro' 'cmd("BALL_ROBOT GYRO_OVERRIDE_AXIS with PKTID 16, OVERRIDE_GYRO_X #{get_named_widget("OVERRIDE_GYRO_X").checked} , OVERRIDE_GYRO_Y #{get_named_widget("OVERRIDE_GYRO_Y").checked}, OVERRIDE_GYRO_Z #{get_named_widget("OVERRIDE_GYRO_Z").checked}, FILL_0 0, FILL_1 0, FILL_2 0")'
 
 
 END
