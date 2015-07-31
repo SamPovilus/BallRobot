@@ -52,8 +52,8 @@ HORIZONTAL
 END
 VERTICALBOX
     NAMED_WIDGET ACC_DIVISOR TEXTFIELD 12 "512.0"
-    BUTTON 'set divisor' 'cmd("BALL_ROBOT ACC_SET_DIVISOR with PKTID 14, ACC_DIVISOR #{get_named_widget("ACC_DIVISOR").text.to_f()}, FILL_1 0, FILL_2 0")'
+    BUTTON 'set divisor acc' 'cmd("BALL_ROBOT ACC_SET_DIVISOR with PKTID 14, ACC_DIVISOR #{get_named_widget("ACC_DIVISOR").text.to_f()}, FILL_1 0, FILL_2 0")'
     NAMED_WIDGET GYRO_DIVISOR TEXTFIELD 12 "512.0"
-    BUTTON 'set divisor' 'cmd("BALL_ROBOT GYRO_SET_DIVISOR with PKTID 14, GYRO_DIVISOR #{get_named_widget("GYRO_DIVISOR").text.to_f()}, FILL_1 0, FILL_2 0")'
+    BUTTON 'set divisor gyro' 'cmd("BALL_ROBOT GYRO_SET_DIVISOR with PKTID 17, GYRO_DIVISOR #{get_named_widget("GYRO_DIVISOR").text.to_f()}, FILL_1 0, FILL_2 0")'
 
 END
