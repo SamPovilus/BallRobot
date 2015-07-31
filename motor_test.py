@@ -99,7 +99,7 @@ while 1:
 
     lastAccY = accY
     accY = YAccQueue.get()
-    dAccY = accY - lastAccy
+    dAccY = accY - lastAccY
 
     pidX = myXP * accX + myXD * gyroX
     pidY = myYP * accY + myYD * gyroX
