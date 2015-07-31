@@ -102,7 +102,7 @@ while 1:
     dAccY = accY - lastAccY
 
     pidX = myXP * accX + myXD * gyroX
-    pidY = myYP * accY + myYD * gyroX
+    pidY = myYP * accY + myYD * gyroY
     
     speedList = TransformXYRotZToMotor.TransformXYRotZToMotor(pidX,pidY,0,debug = False)
     myMotor0.set_speed((speedList[0]))
