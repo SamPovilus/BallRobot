@@ -43,7 +43,7 @@ def TcpHandler():
         conn, addr = s.accept()
         print 'Connection address:', addr
         myTelemetryHandler = TelemetryHandler.TelemetryHandler(Motor1TlmQueue, Motor2TlmQueue, Motor3TlmQueue, IMUTlmQueue , NotificationQueue, conn,debug=False)
-        myCommandHandler= CommandHandler.CommandHandler(CommandQueue,myIMU,conn)
+        myCommandHandler= CommandHandler.CommandHandler(CommandQueue,myIMU,myPIDX,myPIDY,conn)
         myTelemetryHandler.daemon = True
         myCommandHandler.daemon = True
         myTelemetryHandler.start()
