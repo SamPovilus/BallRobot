@@ -10,15 +10,15 @@ class PID():
     lastAcc = 0.0
 
     def set_PID(self,P,I,D):
-        myP = P;
-        myI = I;
-        myD = D;
+        self.myP = P;
+        self.myI = I;
+        self.myD = D;
 
     def process(self, acc, gyro):
-        lastGyro = gyro
-        dGyro = gyro - lastGyro
+        self.lastGyro = gyro
+        self.dGyro = gyro - self.lastGyro
 
-        lastAcc = acc
-        dAcc = acc - lastAcc
+        self.lastAcc = acc
+        self.dAcc = acc - self.lastAcc
 
-        return myP * acc + myD * gyro
+        return self.myP * acc + self.myD * gyro
