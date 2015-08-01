@@ -63,9 +63,9 @@ class Motor(threading.Thread):
     def run(self):
         while 1:
             #TODO: better filter design
-#            self.pastSpeeds.append(self.myDesiredSpeed)
-#            currentSpeed = numpy.mean(self.pastSpeeds)
-#            currentSpeed = self.myDesiredSpeed
+            self.pastSpeeds.append(self.myDesiredSpeed)
+            currentSpeed = numpy.mean(self.pastSpeeds)
+            currentSpeed = self.myDesiredSpeed
             if(self.myDesiredSpeed>100.0):
               print "ERROR current speed out of range +" + str(self.myDesiredSpeed)
               self.myDesiredSpeed=100.0
