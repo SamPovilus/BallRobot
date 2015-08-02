@@ -37,7 +37,7 @@ class PID():
         if lastRate > 50000 or lastRate < 10000:
             print "cycle: " + str(self.cycleCount) + " rate: " + str(lastRate)
         self.times.append(lastRate)
-        if(self.cycleCount%100 == 0):
+        if(self.cycleCount%5000 == 0):
             print numpy.mean(self.times)
             print self.times
         self.lasttime = ms
