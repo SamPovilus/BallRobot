@@ -1,4 +1,6 @@
 import datetime
+import collections
+import numpy
 
 class PID():
     myP = 1.0
@@ -16,6 +18,12 @@ class PID():
 
     lasttime = 0
 
+    times = None
+    cycleCount = 0
+    
+    def __init__(self):
+        self.times = collections.deque(maxlen=100) 
+    
     def set_PID(self,P,I,D):
         self.myP = P;
         self.myI = I;
@@ -23,8 +31,11 @@ class PID():
 
 
     def process(self, acc, gyro):
+        self.cycleCount = self.cycleCount + 1
         ms = datetime.datetime.now().microsecond
-        print (ms - self.lasttime)
+        self.times.append(ms-lasttime)
+        if(self.cycleCount%100 = 0):
+            print numpy.mean(self.times)
         self.lasttime = ms
         self.lastGyro = gyro
         self.dGyro = gyro - self.lastGyro
