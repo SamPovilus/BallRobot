@@ -34,7 +34,7 @@ class PID():
         self.cycleCount = self.cycleCount + 1
         ms = datetime.datetime.now().microsecond
         self.times.append(ms-lasttime)
-        if(self.cycleCount%100 = 0):
+        if(self.cycleCount%100 == 0):
             print numpy.mean(self.times)
         self.lasttime = ms
         self.lastGyro = gyro
