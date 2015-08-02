@@ -33,7 +33,10 @@ class PID():
     def process(self, acc, gyro):
         self.cycleCount = self.cycleCount + 1
         ms = datetime.datetime.now().microsecond
-        self.times.append(ms-self.lasttime)
+        lastRate = ms-self.lasttime
+        if lastRate > 50000 || lastRate < 10000:
+            print "cycle: " + str(self.cycleCount) " rate: " + str(lastRate)
+        self.times.append(lastRate)
         if(self.cycleCount%100 == 0):
             print numpy.mean(self.times)
             print self.times
