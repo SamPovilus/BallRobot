@@ -24,8 +24,8 @@ class PID():
 
     def process(self, acc, gyro):
         ms = datetime.datetime.now().microsecond
-        print (ms - lasttime)
-        lasttime = ms
+        print (ms - self.lasttime)
+        self.lasttime = ms
         self.lastGyro = gyro
         self.dGyro = gyro - self.lastGyro
 
