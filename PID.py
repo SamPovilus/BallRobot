@@ -34,7 +34,7 @@ class PID():
         self.cycleCount = self.cycleCount + 1
         ms = datetime.datetime.now().microsecond
         lastRate = ms-self.lasttime
-        if lastRate > 50000 || lastRate < 10000:
+        if lastRate > 50000 or lastRate < 10000:
             print "cycle: " + str(self.cycleCount) " rate: " + str(lastRate)
         self.times.append(lastRate)
         if(self.cycleCount%100 == 0):
