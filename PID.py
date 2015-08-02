@@ -36,6 +36,7 @@ class PID():
         self.times.append(ms-self.lasttime)
         if(self.cycleCount%100 == 0):
             print numpy.mean(self.times)
+            print self.times
         self.lasttime = ms
         self.lastGyro = gyro
         self.dGyro = gyro - self.lastGyro
