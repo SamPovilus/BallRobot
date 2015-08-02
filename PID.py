@@ -33,7 +33,7 @@ class PID():
     def process(self, acc, gyro):
         self.cycleCount = self.cycleCount + 1
         ms = datetime.datetime.now().microsecond
-        self.times.append(ms-lasttime)
+        self.times.append(ms-self.lasttime)
         if(self.cycleCount%100 == 0):
             print numpy.mean(self.times)
         self.lasttime = ms
