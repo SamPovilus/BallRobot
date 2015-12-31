@@ -30,8 +30,10 @@ myMotor2 = Motor.Motor("P8_13","P8_11",True,2,10000,Motor3TlmQueue,NotificationQ
 
 myPIDX = PID.PID()
 myPIDY = PID.PID()
+myPIDX.set_PID(1.0,0.0,0.0)
+myPIDY.set_PID(1.0,0.0,0.0)
 
-myIMU = ReadIMU.ReadIMU(0x53,0x68,XAccQueue,YAccQueue,XGyroQueue,YGyroQueue,IMUTlmQueue,NotificationQueue,maxAccVal = 256.0, maxGyroVal = 128.0,period=0.002,debug = False)
+myIMU = ReadIMU.ReadIMU(0x53,0x68,XAccQueue,YAccQueue,XGyroQueue,YGyroQueue,IMUTlmQueue,NotificationQueue,maxAccVal = 256.0, maxGyroVal = 128.0,period=0.01,debug = False)
 
 def TcpHandler():
     while 1:
