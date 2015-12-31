@@ -1,6 +1,7 @@
 from Adafruit_I2C import Adafruit_I2C as I2C
 import Adafruit_BBIO.PWM as motor1
 import Adafruit_BBIO.PWM as motor2
+import Adafruit_BBIO.PWM as motor3
 motor_1_port_string = "P9_14"
 motor_2_port_string = "P9_22"
 motor_3_port_string = "P8_13"
